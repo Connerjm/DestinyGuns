@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
-                    new LoginAuthenticate().execute(url);//Do stuff if log in works, otherwise toast with why it didn't
+                    new LoginAuthenticate().execute(url);//TODO Do stuff if log in works, otherwise toast with why it didn't
                 }
             }
         });
@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment
             public void onClick(View v) {
                 Fragment regFrag = new RegisterFragment();
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.lr_container, regFrag).commit();//lr container?
+                fragmentManager.beginTransaction().replace(R.id.lr_container, regFrag).addToBackStack(null).commit();
             }
         });
         return v;
