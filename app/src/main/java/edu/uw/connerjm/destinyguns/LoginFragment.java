@@ -4,7 +4,6 @@ package edu.uw.connerjm.destinyguns;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,9 +64,7 @@ public class LoginFragment extends Fragment
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterFragment regFrag = new RegisterFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.lr_container, regFrag).addToBackStack(null).commit();
+                ((RegisterListener) getActivity()).startMenu();
             }
         });
         return v;
@@ -154,6 +151,7 @@ public class LoginFragment extends Fragment
         }
     }
 
-
-
+    public interface RegisterListener {
+        public void startMenu();
+    }
 }
