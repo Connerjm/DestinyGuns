@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
-                    new LoginAuthenticate().execute(url);
+                    new LoginAuthenticate().execute(url);//Do stuff if log in works, otherwise toast with why it didn't
                 }
             }
         });
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment
             public void onClick(View v) {
                 Fragment regFrag = new RegisterFragment();
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().add(R.id.lr_container, regFrag).commit();
+                fragmentManager.beginTransaction().replace(R.id.lr_container, regFrag).commit();//lr container?
             }
         });
         return v;
@@ -123,9 +123,9 @@ public class LoginFragment extends Fragment
             return null;
         }
 
-        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException
+        public String readIt(InputStream stream, int len) throws IOException
         {
-            Reader reader = null;
+            Reader reader;
             reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);

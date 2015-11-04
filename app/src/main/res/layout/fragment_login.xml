@@ -36,18 +36,18 @@
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="Enter"
+            android:text="Login"
             android:id="@+id/confirm_login_button"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="Register"
+            android:text="New User"
             android:id="@+id/register_login_button"/>
 
     </LinearLayout>
