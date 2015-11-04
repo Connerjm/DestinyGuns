@@ -9,6 +9,11 @@
     android:id="@+id/login_layout"
     tools:context="edu.uw.connerjm.destinyguns.LoginActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGIN FRAGMENT!"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
