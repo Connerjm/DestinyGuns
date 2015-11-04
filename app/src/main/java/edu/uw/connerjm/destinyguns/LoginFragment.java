@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment regFrag = new RegisterFragment();
+                RegisterFragment regFrag = new RegisterFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.lr_container, regFrag).addToBackStack(null).commit();
             }
