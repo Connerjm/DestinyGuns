@@ -4,7 +4,6 @@ package edu.uw.connerjm.destinyguns;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,19 +26,19 @@ import java.net.URL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment
+public class RegisterFragment extends Fragment
 {
-    //This url needs to be checked.
-    private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
+    private String url = "http://cssgate.insttech.washington.edu/~connerjm/addUser.php";
 
     private EditText mEmail;
     private EditText mPassword;
-    private Button mLogin;
-    private Button mRegistration;
+    private Button mRegister;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,37 +48,27 @@ public class LoginFragment extends Fragment
         mEmail = (EditText) v.findViewById(R.id.email_login_text);
         mPassword = (EditText) v.findViewById(R.id.password_login_text);
 
-        mLogin = (Button) v.findViewById(R.id.confirm_login_button);
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mRegister = (Button) v.findViewById(R.id.confirm_login_button);
+        mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
-                    new LoginAuthenticate().execute(url);
+                    new AddUserWebTask().execute(url);
                 }
-            }
-        });
-
-        //Transfer to RegistrationFragment
-        mRegistration = (Button) v.findViewById(R.id.register_login_button);
-        mRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment regFrag = new RegisterFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().add(R.id.lr_container, regFrag).commit();
             }
         });
         return v;
     }
 
-    private class LoginAuthenticate extends AsyncTask<String, Void, String> {
-
+    private class AddUserWebTask extends AsyncTask<String, Void, String>
+    {
         private static final String TAG = "AddUserWebTask";
 
         @Override
-        protected String doInBackground(String... urls) {
+        protected String doInBackground(String...urls)
+        {
             try
             {
                 return downloadUrl(urls[0]);
@@ -132,6 +121,7 @@ public class LoginFragment extends Fragment
             return new String(buffer);
         }
 
+        @Override
         protected void onPostExecute(String s)
         {
             super.onPostExecute(s);
@@ -141,20 +131,17 @@ public class LoginFragment extends Fragment
                 String status = jsonObject.getString("result");
                 if (status.equalsIgnoreCase("success"))
                 {
-                    Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "User successfully inserted", Toast.LENGTH_LONG).show();
                 }
-                //Need to transition to MainActivity here.
-
-                //Old code
-                //getFragmentManager().popBackStackImmediate();
+                getFragmentManager().popBackStackImmediate();
             }
             catch(Exception e)
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
         }
-    }
 
+    }
 
 
 }
