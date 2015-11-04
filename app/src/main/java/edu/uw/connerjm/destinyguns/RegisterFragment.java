@@ -64,7 +64,7 @@ public class RegisterFragment extends Fragment
 
     private class AddUserWebTask extends AsyncTask<String, Void, String>
     {
-        private static final String TAG = "AddUserWebTask";
+        private static final String TAG = "RegisterWebTask";
 
         @Override
         protected String doInBackground(String...urls)
@@ -112,9 +112,9 @@ public class RegisterFragment extends Fragment
             return null;
         }
 
-        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException
+        public String readIt(InputStream stream, int len) throws IOException
         {
-            Reader reader = null;
+            Reader reader;
             reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);

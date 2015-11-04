@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment
 
     private class LoginAuthenticate extends AsyncTask<String, Void, String> {
 
-        private static final String TAG = "AddUserWebTask";
+        private static final String TAG = "LoginWebTask";
 
         @Override
         protected String doInBackground(String... urls) {
