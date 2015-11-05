@@ -1,6 +1,7 @@
 package edu.uw.connerjm.destinyguns;
 
 
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -30,22 +32,25 @@ public class LoginFragment extends Fragment
     //This url needs to be checked.
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
 
+    private Button mRegister;
+    private Button mLogin;
     private EditText mEmail;
     private EditText mPassword;
-    private Button mLogin;
-    private Button mRegistration;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public LoginFragment() {
+        // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_login,container,false);
 
-        mEmail = (EditText) v.findViewById(R.id.email_login_text);
-        mPassword = (EditText) v.findViewById(R.id.password_login_text);
+
+
+        View v = inflater.inflate(R.layout.fragment_login, container, false);
+        mEmail = (EditText) v.findViewById(R.id.email_login);
+        mPassword = (EditText) v.findViewById(R.id.password_login);
 
         mLogin = (Button) v.findViewById(R.id.confirm_login_button);
         mLogin.setOnClickListener(new View.OnClickListener() {
@@ -54,28 +59,29 @@ public class LoginFragment extends Fragment
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
-                    new LoginAuthenticate().execute(url);//TODO Do stuff if log in works, otherwise toast with why it didn't
+                    new AddUserWebTask().execute(url);
                 }
             }
         });
 
-        //Transfer to RegistrationFragment
-        mRegistration = (Button) v.findViewById(R.id.register_login_button);
-        mRegistration.setOnClickListener(new View.OnClickListener() {
+        mRegister = (Button) v.findViewById(R.id.register_login_button);
+        mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((RegisterListener) getActivity()).startMenu();
+                ((MyRegisterListener) getActivity()).myStart();
             }
         });
+
         return v;
     }
 
-    private class LoginAuthenticate extends AsyncTask<String, Void, String> {
-
-        private static final String TAG = "LoginWebTask";
+    private class AddUserWebTask extends AsyncTask<String, Void, String>
+    {
+        private static final String TAG = "AddUserWebTask";
 
         @Override
-        protected String doInBackground(String... urls) {
+        protected String doInBackground(String...urls)
+        {
             try
             {
                 return downloadUrl(urls[0]);
@@ -119,15 +125,16 @@ public class LoginFragment extends Fragment
             return null;
         }
 
-        public String readIt(InputStream stream, int len) throws IOException
+        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException
         {
-            Reader reader;
+            Reader reader = null;
             reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);
             return new String(buffer);
         }
 
+        @Override
         protected void onPostExecute(String s)
         {
             super.onPostExecute(s);
@@ -139,19 +146,17 @@ public class LoginFragment extends Fragment
                 {
                     Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
                 }
-                //Need to transition to MainActivity here.
-
-                //Old code
-                //getFragmentManager().popBackStackImmediate();
             }
             catch(Exception e)
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
         }
+
     }
 
-    public interface RegisterListener {
-        public void startMenu();
+    public interface MyRegisterListener {
+        void myStart();
+        void myEnd();
     }
 }

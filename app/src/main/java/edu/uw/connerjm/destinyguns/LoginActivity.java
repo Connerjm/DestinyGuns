@@ -1,29 +1,29 @@
 package edu.uw.connerjm.destinyguns;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-public class LoginActivity extends AppCompatActivity implements LoginFragment.RegisterListener
+public class LoginActivity extends AppCompatActivity implements LoginFragment.MyRegisterListener
 {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        LoginFragment loginFragment = new LoginFragment();
-        fragmentTransaction.add(R.id.lr_container, loginFragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.lr_container, new LoginFragment()).commit();
+
     }
 
     @Override
-    public void startMenu() {
-       RegisterFragment registerFragment = new RegisterFragment();
-        getFragmentManager().beginTransaction().replace(R.id.lr_container, registerFragment).commit();
+    public void myStart() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.lr_container, new RegisterFragment()).commit();
+    }
+
+    @Override
+    public void myEnd() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).commit();
     }
 
     @Override

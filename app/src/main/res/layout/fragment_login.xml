@@ -12,6 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="LOGIN FRAGMENT!"/>
 
     <EditText
@@ -19,7 +20,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/email_login_text"
+        android:id="@+id/email_login"
         android:hint="email"
         android:layout_gravity="center_horizontal"/>
 
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/password_login_text"
+        android:id="@+id/password_login"
         android:hint="password"
         android:layout_gravity="center_horizontal"
         android:password="true"/>
