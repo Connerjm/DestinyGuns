@@ -25,13 +25,13 @@ import java.net.URL;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * The login fragment that allows the user to enter their email
+ * and password for the app. Can also start the register fragment from
+ * here.
  */
 public class LoginFragment extends Fragment
 {
-    //This url needs to be checked.
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
-
     private Button mRegister;
     private Button mLogin;
     private EditText mEmail;
@@ -42,6 +42,16 @@ public class LoginFragment extends Fragment
     }
 
 
+    /**
+     * Inflates the UI of the login fragment.
+     * Sets listeners to the buttons for logging in
+     * and registering.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return inflated UI
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,6 +85,9 @@ public class LoginFragment extends Fragment
         return v;
     }
 
+    /**
+     * Tries to authenticate the User's email and password that is stored in an online database.
+     */
     private class AddUserWebTask extends AsyncTask<String, Void, String>
     {
         private static final String TAG = "AddUserWebTask";
@@ -82,6 +95,7 @@ public class LoginFragment extends Fragment
         @Override
         protected String doInBackground(String...urls)
         {
+            // params comes from the execute() call: params[0] is the url.
             try
             {
                 return downloadUrl(urls[0]);
@@ -92,26 +106,36 @@ public class LoginFragment extends Fragment
             }
         }
 
+        // Given a URL, establishes an HttpUrlConnection and retrieves
+        // the web page content as a InputStream, which it returns as
+        // a string.
         private String downloadUrl(String myurl) throws IOException
         {
             InputStream is = null;
+            // Only display the first 500 characters of the retrieved
+            // web page content.
             int len = 500;
 
             try
             {
                 URL url = new URL(myurl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(10000 /*milliseconds*/);
+                conn.setConnectTimeout(15000 /*milliseconds*/);
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
+                // Starts the query
                 conn.connect();
                 int response = conn.getResponseCode();
                 Log.d(TAG, "The response is: " + response);
                 is = conn.getInputStream();
+                // Convert the InputStream into a string
                 String contentAsString = readIt(is, len);
                 Log.d(TAG, "The string is: " + contentAsString);
                 return contentAsString;
+
+                // Makes sure that the InputStream is closed after the app is
+                // finished using it.
             } catch (Exception e)
             {
                 Log.d(TAG, "Something happened. " + e.getMessage());
@@ -125,6 +149,7 @@ public class LoginFragment extends Fragment
             return null;
         }
 
+        // Reads an InputStream and converts it to a String.
         public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException
         {
             Reader reader = null;
@@ -138,13 +163,15 @@ public class LoginFragment extends Fragment
         protected void onPostExecute(String s)
         {
             super.onPostExecute(s);
+
+            // Parse JSON
             try
             {
                 JSONObject jsonObject = new JSONObject(s);
                 String status = jsonObject.getString("result");
                 if (status.equalsIgnoreCase("success"))
                 {
-                    Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Login is Successful.", Toast.LENGTH_LONG).show();
                 }
             }
             catch(Exception e)
@@ -155,8 +182,10 @@ public class LoginFragment extends Fragment
 
     }
 
+    /**
+     * Interface that allows Activity to switch between Fragments.
+     */
     public interface MyRegisterListener {
         void myStart();
-        void myEnd();
     }
 }

@@ -5,9 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+/**
+ * The activity that will hold the Login and Register Fragment.
+ * Also used to transition between the two through an interface method.
+ */
 public class LoginActivity extends AppCompatActivity implements LoginFragment.MyRegisterListener
 {
 
+    /**
+     * Sets the login fragment as the default fragment
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,15 +24,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
 
     }
 
+    /**
+     * Displays the register fragment based on if the user has clicked the register button
+     * on the login fragment.
+     */
     @Override
     public void myStart() {
         getSupportFragmentManager().beginTransaction().replace(R.id.lr_container, new RegisterFragment()).commit();
     }
 
-    @Override
-    public void myEnd() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).commit();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
