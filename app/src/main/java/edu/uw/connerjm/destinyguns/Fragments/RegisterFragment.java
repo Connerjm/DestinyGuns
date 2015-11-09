@@ -1,5 +1,4 @@
-package edu.uw.connerjm.destinyguns;
-
+package edu.uw.connerjm.destinyguns.Fragments;
 
 
 import android.os.AsyncTask;
@@ -23,47 +22,46 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
+import edu.uw.connerjm.destinyguns.R;
 
 /**
- * The login fragment that allows the user to enter their email
- * and password for the app. Can also start the register fragment from
- * here.
+ *
  */
-public class LoginFragment extends Fragment
-{
-    private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
+public class RegisterFragment extends Fragment {
+
+
+    private String url = "http://cssgate.insttech.washington.edu/~connerjm/addUser.php";
     private Button mRegister;
-    private Button mLogin;
     private EditText mEmail;
     private EditText mPassword;
 
-    public LoginFragment() {
+
+    public RegisterFragment() {
         // Required empty public constructor
     }
 
 
     /**
-     * Inflates the UI of the login fragment.
-     * Sets listeners to the buttons for logging in
-     * and registering.
      *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return inflated UI
+     * Inflates the fragment_register UI and sets an
+     * on click listener for the register button.
+     *
+     * @param inflater inflates the layout.
+     * @param container is the activity this fragment is in.
+     * @param savedInstanceState is info.
+     * @return the inflated UI
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View v = inflater.inflate(R.layout.fragment_register, container, false);
 
-
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
-        mEmail = (EditText) v.findViewById(R.id.email_login);
-        mPassword = (EditText) v.findViewById(R.id.password_login);
-
-        mLogin = (Button) v.findViewById(R.id.confirm_login_button);
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mEmail = (EditText) v.findViewById(R.id.email_register);
+        mPassword = (EditText) v.findViewById(R.id.password_register);
+        mRegister = (Button) v.findViewById(R.id.confirm_register);
+        mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
@@ -73,20 +71,11 @@ public class LoginFragment extends Fragment
                 }
             }
         });
-
-        mRegister = (Button) v.findViewById(R.id.register_login_button);
-        mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MyRegisterListener) getActivity()).myStart();
-            }
-        });
-
         return v;
     }
 
     /**
-     * Tries to authenticate the User's email and password that is stored in an online database.
+     * Sends the User's email and password to be stored in an online database.
      */
     private class AddUserWebTask extends AsyncTask<String, Void, String>
     {
@@ -150,9 +139,9 @@ public class LoginFragment extends Fragment
         }
 
         // Reads an InputStream and converts it to a String.
-        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException
+        public String readIt(InputStream stream, int len) throws IOException
         {
-            Reader reader = null;
+            Reader reader;
             reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);
@@ -171,8 +160,10 @@ public class LoginFragment extends Fragment
                 String status = jsonObject.getString("result");
                 if (status.equalsIgnoreCase("success"))
                 {
-                    Toast.makeText(getActivity(), "Login is Successful.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "User successfully inserted", Toast.LENGTH_LONG).show();
                 }
+
+                getFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).addToBackStack(null).commit();
             }
             catch(Exception e)
             {
@@ -182,10 +173,4 @@ public class LoginFragment extends Fragment
 
     }
 
-    /**
-     * Interface that allows Activity to switch between Fragments.
-     */
-    public interface MyRegisterListener {
-        void myStart();
-    }
 }

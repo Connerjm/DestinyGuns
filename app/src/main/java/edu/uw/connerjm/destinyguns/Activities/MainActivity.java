@@ -1,9 +1,11 @@
-package edu.uw.connerjm.destinyguns;
+package edu.uw.connerjm.destinyguns.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+
+import edu.uw.connerjm.destinyguns.R;
 
 public class MainActivity extends AppCompatActivity
 {
