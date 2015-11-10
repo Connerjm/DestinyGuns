@@ -12,8 +12,4 @@
     style="@style/ActivityStyles"
     tools:context="edu.uw.connerjm.destinyguns.Activities.LoginActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGIN ACTIVITY!"/>
 </RelativeLayout>
