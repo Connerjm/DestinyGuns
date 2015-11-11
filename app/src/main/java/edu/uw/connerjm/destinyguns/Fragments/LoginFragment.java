@@ -174,7 +174,10 @@ public class LoginFragment extends Fragment
                 if (status.equalsIgnoreCase("success"))
                 {
                     Toast.makeText(getActivity(), "Login is Successful.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Unable to login. Retype your email and password or choose to register.", Toast.LENGTH_LONG).show();
                 }
+                //Transition to MainActivity goes here.
             }
             catch(Exception e)
             {

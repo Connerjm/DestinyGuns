@@ -160,10 +160,12 @@ public class RegisterFragment extends Fragment {
                 String status = jsonObject.getString("result");
                 if (status.equalsIgnoreCase("success"))
                 {
-                    Toast.makeText(getActivity(), "User successfully inserted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "You have successfully registered", Toast.LENGTH_LONG).show();
+                    getFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).addToBackStack(null).commit();
+                } else {
+                    Toast.makeText(getActivity(), "Unable to register. Please retype your email and password. Password must be at least 6 characters in length.", Toast.LENGTH_LONG).show();
                 }
 
-                getFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).addToBackStack(null).commit();
             }
             catch(Exception e)
             {
