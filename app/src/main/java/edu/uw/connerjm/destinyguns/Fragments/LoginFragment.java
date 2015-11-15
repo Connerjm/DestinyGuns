@@ -1,7 +1,7 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
-
-
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,30 +19,54 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.uw.connerjm.destinyguns.R;
 
-
 /**
  * The login fragment that allows the user to enter their email
  * and password for the app. Can also start the register fragment from
  * here.
+ *
+ * @author Conner Martin
+ * @author Robert Gillis
+ * @version 0.0.01
+ * @since 14/11/2015
  */
 public class LoginFragment extends Fragment
 {
+
+//INTERFACE
+
+    /**
+     * Interface that allows Activity to switch between Fragments and main activity.
+     */
+    public interface MyRegisterListener
+    {
+        void myStartRegister();
+        void myStartMain();
+    }
+
+//VARIABLES
+
+    /** the server url used to log the user in. */
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
+
+    /** the layout components we interact with. */
     private Button mRegister;
     private Button mLogin;
     private EditText mEmail;
     private EditText mPassword;
 
-    public LoginFragment() {
+//CONSTRUCTOR
+
+    public LoginFragment()
+    {
         // Required empty public constructor
     }
 
+//INHERITED METHODS
 
     /**
      * Inflates the UI of the login fragment.
@@ -56,43 +80,66 @@ public class LoginFragment extends Fragment
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
-
+                             Bundle savedInstanceState)
+    {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
+
         mEmail = (EditText) v.findViewById(R.id.email_login);
         mPassword = (EditText) v.findViewById(R.id.password_login);
 
         mLogin = (Button) v.findViewById(R.id.confirm_login_button);
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mLogin.setOnClickListener(new View.OnClickListener()
+        {
+            /**
+             * Goes through a process of receiving the email and text combination and attempting to
+             * login from the database of users. If logging in is successful, the post execute will
+             * take the user to the main application.
+             *
+             * @param v the parent view.
+             */
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
-                    url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
+                    url += "?email=" + mEmail.getText().toString() + "&password=" +
+                            mPassword.getText().toString();
                     new AddUserWebTask().execute(url);
                 }
             }
         });
 
         mRegister = (Button) v.findViewById(R.id.register_login_button);
-        mRegister.setOnClickListener(new View.OnClickListener() {
+        mRegister.setOnClickListener(new View.OnClickListener()
+        {
+            /**
+             * When the register button is clicked, the login activity will switch to the register
+             * fragment from this one.
+             *
+             * @param v the parent view.
+             */
             @Override
-            public void onClick(View v) {
-                ((MyRegisterListener) getActivity()).myStart();
+            public void onClick(View v)
+            {
+                ((MyRegisterListener) getActivity()).myStartRegister();
             }
         });
-
         return v;
     }
+
+//INNER CLASSES
 
     /**
      * Tries to authenticate the User's email and password that is stored in an online database.
      */
     private class AddUserWebTask extends AsyncTask<String, Void, String>
     {
+
+    //VARIABLES
+
         private static final String TAG = "AddUserWebTask";
+
+    //METHODS
 
         @Override
         protected String doInBackground(String...urls)
@@ -108,9 +155,15 @@ public class LoginFragment extends Fragment
             }
         }
 
-        // Given a URL, establishes an HttpUrlConnection and retrieves
-        // the web page content as a InputStream, which it returns as
-        // a string.
+        /**
+         * Given a URL, establishes an HttpUrlConnection and retrieves
+         * the web page content as a InputStream, which it returns as
+         * a string.
+         *
+         * @param myurl is the server url to execute.
+         * @return the characters from the page.
+         * @throws IOException
+         */
         private String downloadUrl(String myurl) throws IOException
         {
             InputStream is = null;
@@ -138,12 +191,14 @@ public class LoginFragment extends Fragment
 
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch (Exception e)
+            }
+            catch(Exception e)
             {
                 Log.d(TAG, "Something happened. " + e.getMessage());
-            } finally
+            }
+            finally
             {
-                if (is != null)
+                if(is != null)
                 {
                     is.close();
                 }
@@ -151,7 +206,14 @@ public class LoginFragment extends Fragment
             return null;
         }
 
-        // Reads an InputStream and converts it to a String.
+        /**
+         * Reads an InputStream and converts it to a String.
+         *
+         * @param stream is the file reader.
+         * @param len is the amount of characters we're limiting to.
+         * @return the string of characters.
+         * @throws IOException
+         */
         public String readIt(InputStream stream, int len) throws IOException
         {
             Reader reader;
@@ -161,6 +223,12 @@ public class LoginFragment extends Fragment
             return new String(buffer);
         }
 
+        /**
+         * Handles the result of the attempt to log in, printing a toast to let the user know what
+         * happened. If successful, sets the shared preferences and starts the main activity.
+         *
+         * @param s is the json string.
+         */
         @Override
         protected void onPostExecute(String s)
         {
@@ -171,10 +239,17 @@ public class LoginFragment extends Fragment
             {
                 JSONObject jsonObject = new JSONObject(s);
                 String status = jsonObject.getString("result");
-                if (status.equalsIgnoreCase("success"))
+                if(status.equalsIgnoreCase("success"))
                 {
                     Toast.makeText(getActivity(), "Login is Successful.", Toast.LENGTH_LONG).show();
-                } else {
+                    SharedPreferences mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putBoolean(getString(R.string.LOGGED_IN), true);
+                    editor.commit();
+                    ((MyRegisterListener) getActivity()).myStartMain();
+                }
+                else
+                {
                     Toast.makeText(getActivity(), "Unable to login. Retype your email and password or choose to register.", Toast.LENGTH_LONG).show();
                 }
                 //Transition to MainActivity goes here.
@@ -184,13 +259,5 @@ public class LoginFragment extends Fragment
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
         }
-
-    }
-
-    /**
-     * Interface that allows Activity to switch between Fragments.
-     */
-    public interface MyRegisterListener {
-        void myStart();
     }
 }

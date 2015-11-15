@@ -1,6 +1,5 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,32 +17,40 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
+ * A fragment that allows the a new user to register into the database with a username and password.
  *
+ * @author Conner Martin
+ * @author Robert Gillis
+ * @version 0.0.01
+ * @since 14/11/2015
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment
+{
 
+//VARIABLES
 
+    /** the server url to add a user to the database. */
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/addUser.php";
+
+    /** the layout parts that we need access to. */
     private Button mRegister;
     private EditText mEmail;
     private EditText mPassword;
 
+//CONSTRUCTOR
 
-    public RegisterFragment() {
+    public RegisterFragment()
+    {
         // Required empty public constructor
     }
 
-
     /**
-     *
      * Inflates the fragment_register UI and sets an
      * on click listener for the register button.
      *
@@ -54,16 +61,25 @@ public class RegisterFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+                             Bundle savedInstanceState)
+    {
         View v = inflater.inflate(R.layout.fragment_register, container, false);
 
         mEmail = (EditText) v.findViewById(R.id.email_register);
         mPassword = (EditText) v.findViewById(R.id.password_register);
+
         mRegister = (Button) v.findViewById(R.id.confirm_register);
-        mRegister.setOnClickListener(new View.OnClickListener() {
+        mRegister.setOnClickListener(new View.OnClickListener()
+        {
+            /**
+             * When the register button is clicked, if the fields are filled out accordingly, we
+             * attempt to add the new user to the database using the given email and password.
+             *
+             * @param v is the parent view.
+             */
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
@@ -74,12 +90,19 @@ public class RegisterFragment extends Fragment {
         return v;
     }
 
+//INNER CLASSES
+
     /**
      * Sends the User's email and password to be stored in an online database.
      */
     private class AddUserWebTask extends AsyncTask<String, Void, String>
     {
+
+    //VARIABLES
+
         private static final String TAG = "AddUserWebTask";
+
+    //METHODS
 
         @Override
         protected String doInBackground(String...urls)
@@ -95,9 +118,15 @@ public class RegisterFragment extends Fragment {
             }
         }
 
-        // Given a URL, establishes an HttpUrlConnection and retrieves
-        // the web page content as a InputStream, which it returns as
-        // a string.
+        /**
+         * Given a URL, establishes an HttpUrlConnection and retrieves
+         * the web page content as a InputStream, which it returns as
+         * a string.
+         *
+         * @param myurl is the url we are downloading.
+         * @return the characters retrieved from the web page.
+         * @throws IOException
+         */
         private String downloadUrl(String myurl) throws IOException
         {
             InputStream is = null;
@@ -125,10 +154,12 @@ public class RegisterFragment extends Fragment {
 
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch (Exception e)
+            }
+            catch(Exception e)
             {
                 Log.d(TAG, "Something happened. " + e.getMessage());
-            } finally
+            }
+            finally
             {
                 if (is != null)
                 {
@@ -158,21 +189,20 @@ public class RegisterFragment extends Fragment {
             {
                 JSONObject jsonObject = new JSONObject(s);
                 String status = jsonObject.getString("result");
-                if (status.equalsIgnoreCase("success"))
+                if(status.equalsIgnoreCase("success"))
                 {
                     Toast.makeText(getActivity(), "You have successfully registered", Toast.LENGTH_LONG).show();
                     getFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).addToBackStack(null).commit();
-                } else {
+                }
+                else
+                {
                     Toast.makeText(getActivity(), "Unable to register. Please retype your email and password. Password must be at least 6 characters in length.", Toast.LENGTH_LONG).show();
                 }
-
             }
             catch(Exception e)
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
         }
-
     }
-
 }
