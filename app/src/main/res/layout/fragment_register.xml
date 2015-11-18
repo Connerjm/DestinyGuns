@@ -4,38 +4,84 @@
     android:id="@+id/register_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register New User"/>
+        android:text="@string/register_new_user"
+        android:padding="20dp"
+        android:layout_gravity="center" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/email_register"
-        android:layout_gravity="center_horizontal"
-        android:hint="email" />
+        android:hint="@string/email" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/EditTextStyle"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password_register"
-        android:hint="password" />
+        android:hint="@string/password" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/EditTextStyle"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/fname_register"
+            android:layout_weight="5"
+            android:hint="@string/fname" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/EditTextStyle"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/minit_register"
+            android:layout_weight="1"
+            android:hint="@string/minit" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/EditTextStyle"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/lname_register"
+            android:layout_weight="5"
+            android:hint="@string/lname" />
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
+        android:ems="10"
+        android:id="@+id/console_register"
+        android:hint="@string/console" />
 
     <Button
         style="@style/ButtonStyle"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="@string/register"
         android:id="@+id/confirm_register"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="right" />
+
 </LinearLayout>

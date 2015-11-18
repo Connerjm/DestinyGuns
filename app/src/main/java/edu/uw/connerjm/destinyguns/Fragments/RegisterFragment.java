@@ -1,5 +1,6 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,10 @@ public class RegisterFragment extends Fragment
     private Button mRegister;
     private EditText mEmail;
     private EditText mPassword;
+    private EditText mFname;
+    private EditText mMinit;
+    private EditText mLname;
+    private EditText mConsole;
 
 //CONSTRUCTOR
 
@@ -67,6 +72,11 @@ public class RegisterFragment extends Fragment
 
         mEmail = (EditText) v.findViewById(R.id.email_register);
         mPassword = (EditText) v.findViewById(R.id.password_register);
+        mFname = (EditText) v.findViewById(R.id.fname_register);
+        mMinit = (EditText) v.findViewById(R.id.minit_register);
+        mLname = (EditText) v.findViewById(R.id.lname_register);
+        mConsole = (EditText) v.findViewById(R.id.console_register);
+
 
         mRegister = (Button) v.findViewById(R.id.confirm_register);
         mRegister.setOnClickListener(new View.OnClickListener()
@@ -82,7 +92,12 @@ public class RegisterFragment extends Fragment
             {
                 if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
                 {
-                    url += "?email=" + mEmail.getText().toString() + "&password=" + mPassword.getText().toString();
+                    url += "?email=" + mEmail.getText().toString() +
+                            "&password=" + mPassword.getText().toString() +
+                            "&fname" + mFname.getText().toString() +
+                            "&minit" + mMinit.getText().toString() +
+                            "&lname" + mLname.getText().toString() +
+                            "&console" + mConsole.getText().toString();
                     new AddUserWebTask().execute(url);
                 }
             }

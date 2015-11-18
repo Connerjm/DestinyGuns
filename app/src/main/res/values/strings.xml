@@ -2,6 +2,14 @@
     <string name="app_name">Destiny Guns</string>
 
     <string name="logout">Logout</string>
+    <string name="register_new_user">Register New User</string>
+    <string name="email">Please enter your email*</string>
+    <string name="password">Your password*</string>
+    <string name="fname">First name*</string>
+    <string name="minit">M</string>
+    <string name="lname">Last name*</string>
+    <string name="console">xbox one or playstation four</string>
+    <string name="register">Register</string>
 
     <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
     <string name="LOGGED_IN">loggedin</string>
