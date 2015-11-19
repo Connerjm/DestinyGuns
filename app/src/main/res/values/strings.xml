@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Destiny Guns</string>
+    <string name="studio_name">Khaos Studios</string>
+
+    <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
+    <string name="LOGGED_IN">loggedin</string>
 
     <string name="logout">Logout</string>
     <string name="register_new_user">Register New User</string>
@@ -10,7 +14,20 @@
     <string name="lname">Last name*</string>
     <string name="console">xbox one or playstation four</string>
     <string name="register">Register</string>
+    <string name="information">App Info</string>
 
-    <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
-    <string name="LOGGED_IN">loggedin</string>
+    <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin
+        and Robert Gillis. It was created as a project for mobile app development and databases
+        courses at the University of Washington Tacoma. We, Conner and Robert, do not own the
+        rights to any of the intellectual property put forth by Bungie and interpreted by us into
+        our application for entertainment and educational purposes.</string>
+    <string name="info_paragraph2">As is the nature of this app is statistic based and Bungie will
+        continue to support this ever-changing game, There will undoubtedly be misinformation that
+        we, the devs, will have not intended. If you find any information that is incorrect, please
+         email the CEO of Khaos Studios at connerjm@uw.edu, or follow the steps of filling a bug
+        report below.</string>
+    <string name="bug_report_paragraph">To send the devs a bug report, click anywhere along this
+        message to be taken to your mail app and email us a detailed description on the bug or
+        misinformation that you have found, most importantly including how to recreate the bug.</string>
+
 </resources>
