@@ -1,6 +1,5 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,8 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -18,8 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import edu.uw.connerjm.destinyguns.R;
 
@@ -28,8 +32,8 @@ import edu.uw.connerjm.destinyguns.R;
  *
  * @author Conner Martin
  * @author Robert Gillis
- * @version 0.0.01
- * @since 14/11/2015
+ * @version 0.0.02
+ * @since 20/11/2015
  */
 public class RegisterFragment extends Fragment
 {
@@ -46,14 +50,12 @@ public class RegisterFragment extends Fragment
     private EditText mFname;
     private EditText mMinit;
     private EditText mLname;
-    private EditText mConsole;
+    private Spinner mConsoleSpinner;
+    private String mConsole = null;
 
 //CONSTRUCTOR
 
-    public RegisterFragment()
-    {
-        // Required empty public constructor
-    }
+    public RegisterFragment() {/* Required empty public constructor */}
 
     /**
      * Inflates the fragment_register UI and sets an
@@ -75,8 +77,26 @@ public class RegisterFragment extends Fragment
         mFname = (EditText) v.findViewById(R.id.fname_register);
         mMinit = (EditText) v.findViewById(R.id.minit_register);
         mLname = (EditText) v.findViewById(R.id.lname_register);
-        mConsole = (EditText) v.findViewById(R.id.console_register);
 
+        mConsoleSpinner = (Spinner) v.findViewById(R.id.console_register);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.console_spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mConsoleSpinner.setAdapter(adapter);
+        mConsoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                mConsole = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                mConsole = null;
+            }
+        });
 
         mRegister = (Button) v.findViewById(R.id.confirm_register);
         mRegister.setOnClickListener(new View.OnClickListener()
@@ -90,15 +110,29 @@ public class RegisterFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
+                if(mFname.getText().toString().length() < 1)
                 {
-                    url += "?email=" + mEmail.getText().toString() +
+                    Toast.makeText(getActivity(), "First name is required",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if(mLname.getText().toString().length() < 1)
+                {
+                    Toast.makeText(getActivity(), "Last name is required",
+                            Toast.LENGTH_LONG).show();
+                }
+                else if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
+                {
+                    String myUrl = url + "?email=" + mEmail.getText().toString() +
                             "&password=" + mPassword.getText().toString() +
-                            "&fname" + mFname.getText().toString() +
-                            "&minit" + mMinit.getText().toString() +
-                            "&lname" + mLname.getText().toString() +
-                            "&console" + mConsole.getText().toString();
-                    new AddUserWebTask().execute(url);
+                            "&fname=" + mFname.getText().toString() +
+                            "&minit=" + mMinit.getText().toString() +
+                            "&lname=" + mLname.getText().toString();
+                    try
+                    {
+                        myUrl += "&console=" + URLEncoder.encode(mConsole, "UTF-8");
+                    }
+                    catch(UnsupportedEncodingException e) {e.printStackTrace();}
+                    new AddUserWebTask().execute(myUrl);
                 }
             }
         });
@@ -206,12 +240,15 @@ public class RegisterFragment extends Fragment
                 String status = jsonObject.getString("result");
                 if(status.equalsIgnoreCase("success"))
                 {
-                    Toast.makeText(getActivity(), "You have successfully registered", Toast.LENGTH_LONG).show();
-                    getFragmentManager().beginTransaction().replace(R.id.lr_container, new LoginFragment()).addToBackStack(null).commit();
+                    Toast.makeText(getActivity(), getString(R.string.register_success),
+                            Toast.LENGTH_LONG).show();
+                    getFragmentManager().beginTransaction().replace(R.id.lr_container,
+                            new LoginFragment()).addToBackStack(null).commit();
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Unable to register. Please retype your email and password. Password must be at least 6 characters in length.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.register_failure),
+                            Toast.LENGTH_LONG).show();
                 }
             }
             catch(Exception e)

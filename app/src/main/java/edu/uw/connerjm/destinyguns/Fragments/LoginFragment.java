@@ -61,10 +61,7 @@ public class LoginFragment extends Fragment
 
 //CONSTRUCTOR
 
-    public LoginFragment()
-    {
-        // Required empty public constructor
-    }
+    public LoginFragment() {/* Required empty public constructor */}
 
 //INHERITED METHODS
 
@@ -242,7 +239,8 @@ public class LoginFragment extends Fragment
                 if(status.equalsIgnoreCase("success"))
                 {
                     Toast.makeText(getActivity(), "Login is Successful.", Toast.LENGTH_LONG).show();
-                    SharedPreferences mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), Context.MODE_PRIVATE);
+                    SharedPreferences mSharedPreferences = getActivity().getSharedPreferences
+                            (getString(R.string.SHARED_PREFS), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.putBoolean(getString(R.string.LOGGED_IN), true);
                     editor.commit();
@@ -250,7 +248,8 @@ public class LoginFragment extends Fragment
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Unable to login. Retype your email and password or choose to register.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.login_failure),
+                            Toast.LENGTH_LONG).show();
                 }
                 //Transition to MainActivity goes here.
             }

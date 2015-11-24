@@ -5,6 +5,7 @@
     <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
     <string name="LOGGED_IN">loggedin</string>
 
+    <string name="refine">Refine the weapons you wish to view.</string>
     <string name="logout">Logout</string>
     <string name="register_new_user">Register New User</string>
     <string name="email">Please enter your email*</string>
@@ -12,9 +13,13 @@
     <string name="fname">First name*</string>
     <string name="minit">M</string>
     <string name="lname">Last name*</string>
-    <string name="console">xbox one or playstation four</string>
     <string name="register">Register</string>
     <string name="information">App Info</string>
+    <string name="register_success">Thank you for registering!</string>
+    <string name="register_failure">Unable to register. Please retype your email and password.
+        Password must be at least 6 characters in length.</string>
+    <string name="login_failure">Unable to login. Retype your email and password or
+        choose to register.</string>
 
     <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin
         and Robert Gillis. It was created as a project for mobile app development and databases
@@ -29,5 +34,37 @@
     <string name="bug_report_paragraph">To send the devs a bug report, click anywhere along this
         message to be taken to your mail app and email us a detailed description on the bug or
         misinformation that you have found, most importantly including how to recreate the bug.</string>
+
+    <string-array name="console_spinner">
+        <item>Xbox One</item>
+        <item>Playstation Four</item>
+    </string-array>
+    <string-array name="list_spinner">
+        <item>All</item>
+        <item>Favourites</item>
+        <item>Owned</item>
+        <item>Wishlist</item>
+    </string-array>
+    <string-array name="rarity_spinner">
+        <item>Legendary</item>
+        <item>Exotic</item>
+    </string-array>
+    <string-array name="weapons_slot_spinner">
+        <item>Primary</item>
+        <item>Special</item>
+        <item>Heavy</item>
+    </string-array>
+    <string-array name="gun_type_spinner">
+        <item>Auto Rifle</item>
+        <item>Hand Cannon</item>
+        <item>Scout Rifle</item>
+        <item>Pulse Rifle</item>
+        <item>Fusion Rifle</item>
+        <item>Sniper Rifle</item>
+        <item>Shotgun</item>
+        <item>Machine Gun</item>
+        <item>Rocket Launcher</item>
+        <item>Sword</item>
+    </string-array>
 
 </resources>

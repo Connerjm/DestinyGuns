@@ -13,7 +13,8 @@
     tools:context="edu.uw.connerjm.destinyguns.Activities.MainActivity">
 
     <TextView
-        android:text="MAIN ACTIVITY!"
+        android:text="@string/refine"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
