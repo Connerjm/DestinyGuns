@@ -3,11 +3,16 @@ package edu.uw.connerjm.destinyguns.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import edu.uw.connerjm.destinyguns.R;
 
@@ -57,6 +62,96 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }
+
+        Spinner userListSpinner = (Spinner) findViewById(R.id.user_list_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.list_spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userListSpinner.setAdapter(adapter);
+        userListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+//                something = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+//                something = null;
+            }
+        });
+
+        Button selectListButton = (Button) findViewById(R.id.choose_list_button);
+        selectListButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //Do something
+            }
+        });
+
+        Spinner raritySpinner = (Spinner) findViewById(R.id.weapon_rarity_spinner);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.rarity_spinner, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        raritySpinner.setAdapter(adapter2);
+        raritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+//                something = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+//                something = null;
+            }
+        });
+
+        Spinner slotSpinner = (Spinner) findViewById(R.id.weapon_slot_spinner);
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
+                R.array.slot_spinner, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        slotSpinner.setAdapter(adapter3);
+        slotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+//                something = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+//                something = null;
+            }
+        });
+
+        Spinner typeSpinner = (Spinner) findViewById(R.id.weapon_type_spinner);
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
+                R.array.type_spinner, android.R.layout.simple_spinner_item);
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter4);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+//                something = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+//                something = null;
+            }
+        });
     }
 
     /**
