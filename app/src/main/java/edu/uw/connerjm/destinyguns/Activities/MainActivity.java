@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import edu.uw.connerjm.destinyguns.R;
 
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity
 //VARIABLES
 
     SharedPreferences mSharedPreferences;
+
+    String mList;
+    String mRarity;
+    String mSlot;
+    String mType;
 
 //INHERITED METHODS
 
@@ -63,95 +69,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        Spinner userListSpinner = (Spinner) findViewById(R.id.user_list_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.list_spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        userListSpinner.setAdapter(adapter);
-        userListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-//                something = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-//                something = null;
-            }
-        });
-
-        Button selectListButton = (Button) findViewById(R.id.choose_list_button);
-        selectListButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //Do something
-            }
-        });
-
-        Spinner raritySpinner = (Spinner) findViewById(R.id.weapon_rarity_spinner);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.rarity_spinner, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        raritySpinner.setAdapter(adapter2);
-        raritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-//                something = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-//                something = null;
-            }
-        });
-
-        Spinner slotSpinner = (Spinner) findViewById(R.id.weapon_slot_spinner);
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
-                R.array.slot_spinner, android.R.layout.simple_spinner_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        slotSpinner.setAdapter(adapter3);
-        slotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-//                something = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-//                something = null;
-            }
-        });
-
-        Spinner typeSpinner = (Spinner) findViewById(R.id.weapon_type_spinner);
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
-                R.array.type_spinner, android.R.layout.simple_spinner_item);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter4);
-        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-//                something = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-//                something = null;
-            }
-        });
+        //Set up all of the xml layout elements and their listeners.
+        setUp();
     }
 
     /**
@@ -196,5 +115,161 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUp()
+    {
+        setUpListSpinner();
+        setUpRaritySpinner();
+        setUpSlotSpinner();
+        setUpTypeSpinner();
+        setUpButtons();
+    }
+
+    private void setUpListSpinner()
+    {
+        Spinner userListSpinner = (Spinner) findViewById(R.id.user_list_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.list_spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userListSpinner.setAdapter(adapter);
+        userListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position == 0)
+                {
+                    mList = null;
+                } else
+                {
+                    mList = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                mList = null;
+            }
+        });
+    }
+
+    private void setUpRaritySpinner()
+    {
+        Spinner raritySpinner = (Spinner) findViewById(R.id.weapon_rarity_spinner);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.rarity_spinner, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        raritySpinner.setAdapter(adapter2);
+        raritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position == 0)
+                {
+                    mRarity = null;
+                } else
+                {
+                    mRarity = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                mRarity = null;
+            }
+        });
+    }
+
+    private void setUpSlotSpinner()
+    {
+        Spinner slotSpinner = (Spinner) findViewById(R.id.weapon_slot_spinner);
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
+                R.array.slot_spinner, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        slotSpinner.setAdapter(adapter3);
+        slotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position == 0)
+                {
+                    mSlot = null;
+                } else
+                {
+                    mSlot = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                mSlot = null;
+            }
+        });
+    }
+
+    private void setUpTypeSpinner()
+    {
+        Spinner typeSpinner = (Spinner) findViewById(R.id.weapon_type_spinner);
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
+                R.array.type_spinner, android.R.layout.simple_spinner_item);
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter4);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (position == 0)
+                {
+                    mType = null;
+                } else
+                {
+                    mType = (String) parent.getItemAtPosition(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                mType = null;
+            }
+        });
+    }
+
+    private void setUpButtons()
+    {
+        Button selectListButton = (Button) findViewById(R.id.choose_list_button);
+        selectListButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //TODO go to server and get all the weapons in the chosen list.
+                if(mList != null)
+                {
+                    Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        Button refineWeaponsButton = (Button) findViewById(R.id.refine_list_button);
+        refineWeaponsButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //TODO go to server and get all the weapons that fulfill the selected parameters.
+                if(mRarity != null && mSlot != null && mType != null)
+                {
+                    Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " + mType + " Weapons.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
