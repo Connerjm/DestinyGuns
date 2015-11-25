@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity
 
     SharedPreferences mSharedPreferences;
 
+    Button mSelectListButton;
+    Button mRefineWeaponsButton;
+
     String mList;
     String mRarity;
     String mSlot;
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity
                     Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putBoolean(getString(R.string.LOGGED_IN), false);
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return true;
@@ -141,9 +144,12 @@ public class MainActivity extends AppCompatActivity
                 if (position == 0)
                 {
                     mList = null;
-                } else
+                    mSelectListButton.setEnabled(false);
+                }
+                else
                 {
                     mList = (String) parent.getItemAtPosition(position);
+                    mSelectListButton.setEnabled(true);
                 }
             }
 
@@ -151,6 +157,7 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mList = null;
+                mSelectListButton.setEnabled(false);
             }
         });
     }
@@ -169,10 +176,15 @@ public class MainActivity extends AppCompatActivity
             {
                 if (position == 0)
                 {
+                    //TODO enable other spinners items.
                     mRarity = null;
-                } else
+                    mRefineWeaponsButton.setEnabled(false);
+                }
+                else
                 {
+                    //TODO disable other spinners items.
                     mRarity = (String) parent.getItemAtPosition(position);
+                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -180,6 +192,7 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mRarity = null;
+                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
@@ -198,10 +211,15 @@ public class MainActivity extends AppCompatActivity
             {
                 if (position == 0)
                 {
+                    //TODO enable other spinners items.
                     mSlot = null;
-                } else
+                    mRefineWeaponsButton.setEnabled(false);
+                }
+                else
                 {
+                    //TODO disable other spinners items.
                     mSlot = (String) parent.getItemAtPosition(position);
+                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -209,6 +227,7 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mSlot = null;
+                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
@@ -227,10 +246,15 @@ public class MainActivity extends AppCompatActivity
             {
                 if (position == 0)
                 {
+                    //TODO enable other spinners items.
                     mType = null;
-                } else
+                    mRefineWeaponsButton.setEnabled(false);
+                }
+                else
                 {
+                    //TODO disable other spinners items.
                     mType = (String) parent.getItemAtPosition(position);
+                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -238,37 +262,34 @@ public class MainActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mType = null;
+                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
 
     private void setUpButtons()
     {
-        Button selectListButton = (Button) findViewById(R.id.choose_list_button);
-        selectListButton.setOnClickListener(new View.OnClickListener()
+        mSelectListButton = (Button) findViewById(R.id.choose_list_button);
+        mSelectListButton.setEnabled(false);
+        mSelectListButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 //TODO go to server and get all the weapons in the chosen list.
-                if(mList != null)
-                {
-                    Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
             }
         });
 
-        Button refineWeaponsButton = (Button) findViewById(R.id.refine_list_button);
-        refineWeaponsButton.setOnClickListener(new View.OnClickListener()
+        mRefineWeaponsButton = (Button) findViewById(R.id.refine_list_button);
+        mRefineWeaponsButton.setEnabled(false);
+        mRefineWeaponsButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 //TODO go to server and get all the weapons that fulfill the selected parameters.
-                if(mRarity != null && mSlot != null && mType != null)
-                {
-                    Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " + mType + " Weapons.", Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " + mType + " Weapons.", Toast.LENGTH_LONG).show();
             }
         });
     }
