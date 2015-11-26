@@ -69,8 +69,7 @@ public class HomeFragment extends Fragment
                 {
                     mList = null;
                     mSelectListButton.setEnabled(false);
-                }
-                else
+                } else
                 {
                     mList = (String) parent.getItemAtPosition(position);
                     mSelectListButton.setEnabled(true);
@@ -173,8 +172,7 @@ public class HomeFragment extends Fragment
                     //TODO enable other spinners items.
                     mType = null;
                     mRefineWeaponsButton.setEnabled(false);
-                }
-                else
+                } else
                 {
                     //TODO disable other spinners items.
                     mType = (String) parent.getItemAtPosition(position);
@@ -212,10 +210,75 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                //TODO go to server and get all the weapons that fulfill the selected parameters.
-                Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " +
-                        mType + " Weapons.", Toast.LENGTH_LONG).show();
+                if(isValidRequest())
+                {
+                    //TODO go to server and get all the weapons that fulfill the selected parameters.
+                    Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " +
+                            mType + " Weapons.", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(v.getContext(), getString(R.string.not_valid),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private boolean isValidRequest()
+    {
+        boolean isValid = false;
+        switch(mSlot)
+        {
+            case "Primary":
+                switch (mType)
+                {
+                    case "Auto Rifle":
+                        isValid = true;
+                        break;
+                    case "Hand Cannon":
+                        isValid = true;
+                        break;
+                    case "Scout Rifle":
+                        isValid = true;
+                        break;
+                    case "Pulse Rifle":
+                        isValid = true;
+                        break;
+                }
+                break;
+            case "Special":
+                switch (mType)
+                {
+                    case "Fusion Rifle":
+                        isValid = true;
+                        break;
+                    case "Sniper Rifle":
+                        isValid = true;
+                        break;
+                    case "Shotgun":
+                        isValid = true;
+                        break;
+                    case "Sidearm":
+                        isValid = true;
+                        break;
+                }
+                break;
+            case "Heavy":
+                switch (mType)
+                {
+                    case "Machine Gun":
+                        isValid = true;
+                        break;
+                    case "Rocket Launcher":
+                        isValid = true;
+                        break;
+                    case "Sword":
+                        isValid = true;
+                        break;
+                }
+                break;
+        }
+        return isValid;
     }
 }
