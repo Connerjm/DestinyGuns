@@ -37,11 +37,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.finishOpenedActivities();
     }
 
-    public void testMainShowsUp()
+    public void testHomeShowsUp()
     {
         boolean textFound = solo.searchText("View Selected List");
         textFound &= solo.searchText("Refine the List");
-        assertTrue("Main Activity showed up.", textFound);
+        assertTrue("Home fragment showed up.", textFound);
     }
 
     public void testSelectingList()
@@ -83,5 +83,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnButton(0);
         boolean textFound2 = solo.searchText("Login is Successful.");
         assertTrue("Able to log back in.", textFound2);
+    }
+
+    public void testWeaponRefineValidation()
+    {
+        solo.clickOnText("Select a Rarity");
+        solo.clickOnText("Legendary");
+        solo.clickOnText("Select an Equip Slot");
+        solo.clickOnText("Primary");
+        solo.clickOnText("Select a Weapon Type");
+        solo.clickOnText("Rocket Launcher");
+        solo.clickOnButton(1);
+        boolean textFound = solo.searchText("Not a valid");
+        assertTrue("Weapon validation works", textFound);
     }
 }
