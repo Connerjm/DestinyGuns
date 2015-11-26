@@ -54,8 +54,6 @@ public class LoginFragment extends Fragment
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/login.php";
 
     /** the layout components we interact with. */
-    private Button mRegister;
-    private Button mLogin;
     private EditText mEmail;
     private EditText mPassword;
 
@@ -84,7 +82,7 @@ public class LoginFragment extends Fragment
         mEmail = (EditText) v.findViewById(R.id.email_login);
         mPassword = (EditText) v.findViewById(R.id.password_login);
 
-        mLogin = (Button) v.findViewById(R.id.confirm_login_button);
+        Button mLogin = (Button) v.findViewById(R.id.confirm_login_button);
         mLogin.setOnClickListener(new View.OnClickListener()
         {
             /**
@@ -101,12 +99,12 @@ public class LoginFragment extends Fragment
                 {
                     url += "?email=" + mEmail.getText().toString() + "&password=" +
                             mPassword.getText().toString();
-                    new AddUserWebTask().execute(url);
+                    new LoginWebTask().execute(url);
                 }
             }
         });
 
-        mRegister = (Button) v.findViewById(R.id.register_login_button);
+        Button mRegister = (Button) v.findViewById(R.id.register_login_button);
         mRegister.setOnClickListener(new View.OnClickListener()
         {
             /**
@@ -129,12 +127,12 @@ public class LoginFragment extends Fragment
     /**
      * Tries to authenticate the User's email and password that is stored in an online database.
      */
-    private class AddUserWebTask extends AsyncTask<String, Void, String>
+    private class LoginWebTask extends AsyncTask<String, Void, String>
     {
 
     //VARIABLES
 
-        private static final String TAG = "AddUserWebTask";
+        private static final String TAG = "LoginWebTask";
 
     //METHODS
 

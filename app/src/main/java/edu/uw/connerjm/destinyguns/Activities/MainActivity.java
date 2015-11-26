@@ -8,13 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
 
+import edu.uw.connerjm.destinyguns.Fragments.HomeFragment;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
@@ -32,14 +27,6 @@ public class MainActivity extends AppCompatActivity
 
     SharedPreferences mSharedPreferences;
 
-    Button mSelectListButton;
-    Button mRefineWeaponsButton;
-
-    String mList;
-    String mRarity;
-    String mSlot;
-    String mType;
-
 //INHERITED METHODS
 
     /**
@@ -55,6 +42,8 @@ public class MainActivity extends AppCompatActivity
         //Required super call.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportFragmentManager().beginTransaction().add(R.id.main_activity, new HomeFragment())
+                .addToBackStack(null).commit();
 
         //Use shared preferences file to check if user has logged in previously.
         mSharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS), MODE_PRIVATE);
@@ -71,9 +60,6 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         }
-
-        //Set up all of the xml layout elements and their listeners.
-        setUp();
     }
 
     /**
@@ -118,179 +104,5 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setUp()
-    {
-        setUpListSpinner();
-        setUpRaritySpinner();
-        setUpSlotSpinner();
-        setUpTypeSpinner();
-        setUpButtons();
-    }
-
-    private void setUpListSpinner()
-    {
-        Spinner userListSpinner = (Spinner) findViewById(R.id.user_list_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.list_spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        userListSpinner.setAdapter(adapter);
-        userListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0)
-                {
-                    mList = null;
-                    mSelectListButton.setEnabled(false);
-                }
-                else
-                {
-                    mList = (String) parent.getItemAtPosition(position);
-                    mSelectListButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                mList = null;
-                mSelectListButton.setEnabled(false);
-            }
-        });
-    }
-
-    private void setUpRaritySpinner()
-    {
-        Spinner raritySpinner = (Spinner) findViewById(R.id.weapon_rarity_spinner);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.rarity_spinner, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        raritySpinner.setAdapter(adapter2);
-        raritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0)
-                {
-                    //TODO enable other spinners items.
-                    mRarity = null;
-                    mRefineWeaponsButton.setEnabled(false);
-                }
-                else
-                {
-                    //TODO disable other spinners items.
-                    mRarity = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                mRarity = null;
-                mRefineWeaponsButton.setEnabled(false);
-            }
-        });
-    }
-
-    private void setUpSlotSpinner()
-    {
-        Spinner slotSpinner = (Spinner) findViewById(R.id.weapon_slot_spinner);
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,
-                R.array.slot_spinner, android.R.layout.simple_spinner_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        slotSpinner.setAdapter(adapter3);
-        slotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0)
-                {
-                    //TODO enable other spinners items.
-                    mSlot = null;
-                    mRefineWeaponsButton.setEnabled(false);
-                }
-                else
-                {
-                    //TODO disable other spinners items.
-                    mSlot = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                mSlot = null;
-                mRefineWeaponsButton.setEnabled(false);
-            }
-        });
-    }
-
-    private void setUpTypeSpinner()
-    {
-        Spinner typeSpinner = (Spinner) findViewById(R.id.weapon_type_spinner);
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,
-                R.array.type_spinner, android.R.layout.simple_spinner_item);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter4);
-        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0)
-                {
-                    //TODO enable other spinners items.
-                    mType = null;
-                    mRefineWeaponsButton.setEnabled(false);
-                }
-                else
-                {
-                    //TODO disable other spinners items.
-                    mType = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                mType = null;
-                mRefineWeaponsButton.setEnabled(false);
-            }
-        });
-    }
-
-    private void setUpButtons()
-    {
-        mSelectListButton = (Button) findViewById(R.id.choose_list_button);
-        mSelectListButton.setEnabled(false);
-        mSelectListButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //TODO go to server and get all the weapons in the chosen list.
-                Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        mRefineWeaponsButton = (Button) findViewById(R.id.refine_list_button);
-        mRefineWeaponsButton.setEnabled(false);
-        mRefineWeaponsButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //TODO go to server and get all the weapons that fulfill the selected parameters.
-                Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " + mType + " Weapons.", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 }
