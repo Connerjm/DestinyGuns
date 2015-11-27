@@ -20,6 +20,11 @@ import edu.uw.connerjm.destinyguns.R;
 public class HomeFragment extends Fragment
 {
 
+    public interface homeInterfaceListener
+    {
+        void switchToListFragment(String rarity, String slot, String type);
+    }
+
     Button mSelectListButton;
     Button mRefineWeaponsButton;
 
@@ -215,6 +220,8 @@ public class HomeFragment extends Fragment
                     //TODO go to server and get all the weapons that fulfill the selected parameters.
                     Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " +
                             mType + " Weapons.", Toast.LENGTH_LONG).show();
+                    ((homeInterfaceListener) getActivity()).switchToListFragment(mRarity, mSlot, mType);
+
                 }
                 else
                 {
