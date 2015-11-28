@@ -62,8 +62,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText("Select a Weapon Type");
         solo.clickOnText("Sword");
         solo.clickOnButton(1);
-        boolean textFound = solo.searchText("Retrieving all Exotic, Heavy Sword Weapons");
-        assertTrue("Could select all properties of a weapon and press refine button.", textFound);
+        boolean textFound1 = solo.searchText("Retrieving all Exotic, Heavy Sword Weapons");
+        boolean textFound2 = solo.searchText("Bolt-Caster");
+        assertTrue("Could select all properties of a weapon and " +
+                "press refine button and get results.", textFound1 & textFound2);
     }
 
     public void testMoveToInfo()
