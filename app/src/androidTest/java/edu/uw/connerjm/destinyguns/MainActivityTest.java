@@ -49,7 +49,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText("Select a List");
         solo.clickOnText("Wishlist");
         solo.clickOnButton(0);
-        boolean textFound = solo.searchText("Going to the Wishlist");
+        boolean textFound = solo.searchText("MIDA Multi-Tool");
         assertTrue("Could select a list and press the go to list button.", textFound);
     }
 

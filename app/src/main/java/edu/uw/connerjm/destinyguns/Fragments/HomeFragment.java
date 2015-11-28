@@ -203,7 +203,6 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
                 ((homeInterfaceListener) getActivity()).switchToListFragment(true, mList, null, null, null);
             }
         });
