@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -86,6 +87,11 @@ public class WeaponListFragment extends Fragment
         }
 
         mListView = (ListView) getActivity().findViewById(R.id.weapon_list);
+
+        TextView textView = new TextView(getActivity());
+        textView.setText(args.getString("rarity") + " " + args.getString("type") + "'s");
+
+        mListView.addHeaderView(textView);
 
         mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mList);
