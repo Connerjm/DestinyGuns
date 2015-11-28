@@ -2,6 +2,7 @@ package edu.uw.connerjm.destinyguns.Fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -50,6 +51,7 @@ public class WeaponListFragment extends Fragment
     private List<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
     private ArrayAdapter mAdapter;
+    private SharedPreferences mSharedPreferences;
 
     public WeaponListFragment() {/* Required empty public constructor */}
 
@@ -89,7 +91,8 @@ public class WeaponListFragment extends Fragment
                     myurl = wishlistURL;
                     break;
             }
-            myurl += "?email=" + "connerjm@gmail.com";//TODO change this email!!
+            mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), getActivity().MODE_PRIVATE);
+            myurl += "?email=" + mSharedPreferences.getString(getString(R.string.USERNAME), null);
         }
         else
         {

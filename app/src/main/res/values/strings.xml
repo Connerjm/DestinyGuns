@@ -4,6 +4,7 @@
 
     <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
     <string name="LOGGED_IN">loggedin</string>
+    <string name="USERNAME">username</string>
 
     <string name="refine">Choose a custom list to view or\n use the drop boxes to refine your search.</string>
     <string name="logout">Logout</string>
