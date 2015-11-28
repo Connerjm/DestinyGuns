@@ -22,7 +22,7 @@ public class HomeFragment extends Fragment
 
     public interface homeInterfaceListener
     {
-        void switchToListFragment(String rarity, String slot, String type);
+        void switchToListFragment(boolean wasList, String theList, String rarity, String slot, String type);
     }
 
     Button mSelectListButton;
@@ -203,8 +203,8 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                //TODO go to server and get all the weapons in the chosen list.
                 Toast.makeText(v.getContext(), "Going to the " + mList, Toast.LENGTH_LONG).show();
+                ((homeInterfaceListener) getActivity()).switchToListFragment(true, mList, null, null, null);
             }
         });
 
@@ -217,11 +217,7 @@ public class HomeFragment extends Fragment
             {
                 if(isValidRequest())
                 {
-                    //TODO go to server and get all the weapons that fulfill the selected parameters.
-                    Toast.makeText(v.getContext(), "Retrieving all " + mRarity + ", " + mSlot + " " +
-                            mType + " Weapons.", Toast.LENGTH_LONG).show();
-                    ((homeInterfaceListener) getActivity()).switchToListFragment(mRarity, mSlot, mType);
-
+                    ((homeInterfaceListener) getActivity()).switchToListFragment(false, null, mRarity, mSlot, mType);
                 }
                 else
                 {

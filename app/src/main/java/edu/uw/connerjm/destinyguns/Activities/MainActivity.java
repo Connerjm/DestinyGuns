@@ -64,15 +64,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
     }
 
     @Override
-    public void switchToListFragment(String rarity, String slot, String type)
+    public void switchToListFragment(boolean waslist, String theList, String rarity, String slot, String type)
     {
-//        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
-//                new WeaponListFragment()).addToBackStack(null).commit();
         WeaponListFragment fragment = new WeaponListFragment();
         Bundle args = new Bundle();
-        args.putString("rarity", rarity);
-        args.putString("slot", slot);
-        args.putString("type", type);
+        if(waslist)
+        {
+            args.putBoolean("waslist?", true);
+            args.putString("thelist", theList);
+        }
+        else
+        {
+            args.putBoolean("waslist?", waslist);
+            args.putString("rarity", rarity);
+            args.putString("slot", slot);
+            args.putString("type", type);
+        }
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
                 fragment).addToBackStack(null).commit();

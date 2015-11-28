@@ -39,7 +39,13 @@ public class WeaponListFragment extends Fragment
 {
 
     private static final String
-            url = "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
+            refineURL = "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
+    private static final String
+            favouriteListURL = "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
+    private static final String
+            ownedListURL = "http://cssgate.insttech.washington.edu/~connerjm/viewOwned.php";
+    private static final String
+            wishlistURL = "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
 
     private List<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
@@ -65,20 +71,43 @@ public class WeaponListFragment extends Fragment
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         Bundle args = this.getArguments();
-        StringBuilder myurl = new StringBuilder(url);
-        myurl.append("?rarity=" + args.getString("rarity"));
-        try
+        boolean wasList = args.getBoolean("waslist?");
+        String myurl = "", thelist = "";
+
+        if(wasList)
         {
-            myurl.append("&type=" + URLEncoder.encode(args.getString("type"), "UTF-8"));
+            thelist = args.getString("thelist");
+            switch(thelist)
+            {
+                case "Favourites":
+                    myurl = favouriteListURL;
+                    break;
+                case "Owned":
+                    myurl = ownedListURL;
+                    break;
+                case "Wishlist":
+                    myurl = wishlistURL;
+                    break;
+            }
+            myurl += "?email=" + "connerjm@gmail.com";//TODO change this email!!
         }
-        catch(Exception e)
+        else
         {
-            Log.d("WeaponListURLEncoding", "Error in encoding is " + e.getMessage());
+            myurl = refineURL;
+            myurl += "?rarity=" + args.getString("rarity");
+            try
+            {
+                myurl += "&type=" + URLEncoder.encode(args.getString("type"), "UTF-8");
+            }
+            catch(Exception e)
+            {
+                Log.d("WeaponListURLEncoding", "Error in encoding is " + e.getMessage());
+            }
         }
 
         if(networkInfo != null && networkInfo.isConnected())
         {
-            new WeaponWebTask().execute(myurl.toString());
+            new WeaponWebTask().execute(myurl);
         }
         else
         {
@@ -88,10 +117,20 @@ public class WeaponListFragment extends Fragment
 
         mListView = (ListView) getActivity().findViewById(R.id.weapon_list);
 
-        TextView textView = new TextView(getActivity());
-        textView.setText(args.getString("rarity") + " " + args.getString("type") + "'s");
+        if(wasList)
+        {
+            TextView textView = new TextView(getActivity());
+            textView.setText("Your " + thelist + " weapon's");
 
-        mListView.addHeaderView(textView);
+            mListView.addHeaderView(textView);
+        }
+        else
+        {
+            TextView textView = new TextView(getActivity());
+            textView.setText(args.getString("rarity") + " " + args.getString("type") + "'s");
+
+            mListView.addHeaderView(textView);
+        }
 
         mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mList);
