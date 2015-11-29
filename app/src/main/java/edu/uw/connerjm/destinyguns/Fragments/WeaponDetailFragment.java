@@ -103,7 +103,14 @@ public class WeaponDetailFragment extends Fragment
 
         Bundle args = getArguments();
         String name = args.getString("name"), myurl = url;
+        final String TAG = "Testing name encoding.";
+        Log.d(TAG, name);
+        name = name.replaceAll("\'", "\\\\%27");
+        Log.d(TAG, name);
+        name = name.replaceAll(" ", "%20");
+        Log.d(TAG, name);
         myurl += "?name=" + name;
+        Log.d(TAG, myurl);
 
         if(networkInfo != null && networkInfo.isConnected())
         {

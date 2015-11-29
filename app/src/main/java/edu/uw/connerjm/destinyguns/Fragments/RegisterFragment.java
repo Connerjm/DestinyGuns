@@ -131,7 +131,10 @@ public class RegisterFragment extends Fragment
                     {
                         myUrl += "&console=" + URLEncoder.encode(mConsole, "UTF-8");
                     }
-                    catch(UnsupportedEncodingException e) {e.printStackTrace();}
+                    catch(UnsupportedEncodingException e)
+                    {
+                        Log.d("Encoding string error.", e.getMessage());
+                    }
                     new AddUserWebTask().execute(myUrl);
                 }
             }
