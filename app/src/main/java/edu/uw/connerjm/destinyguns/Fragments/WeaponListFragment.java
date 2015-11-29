@@ -1,6 +1,5 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -35,16 +34,26 @@ import edu.uw.connerjm.destinyguns.HelperClasses.WeaponInfo;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Holds the list of weapons that fulfill what is chosen from the home activity.
+ *
+ * @author Conner Martin
+ * @author Robert Gillis
+ * @version 0.0.01
+ * @since 29/11/2015
  */
 public class WeaponListFragment extends Fragment
 {
+
+//INTERFACE
 
     public interface weaponListListener
     {
         void switchToWeaponDetailFragment(String name);
     }
 
+//VARIABLES
+
+    /** The different urls that we need to talk to the server. */
     private static final String refineURL =
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
     private static final String favouriteListURL =
@@ -54,14 +63,28 @@ public class WeaponListFragment extends Fragment
     private static final String wishlistURL =
             "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
 
+    /** Holds a list of the weapon info we need for holding these weapons. */
     private List<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
     private ArrayAdapter mAdapter;
+
+    /** Holds that shared prefs file that holds the username. */
     private SharedPreferences mSharedPreferences;
+
+//CONSTRUCTOR
 
     public WeaponListFragment() {/* Required empty public constructor */}
 
+//OVERWRITTEN METHODS
 
+    /**
+     * Creates the view and inflates the correct xml layout.
+     *
+     * @param inflater inflates the layout.
+     * @param container is the main activity.
+     * @param savedInstanceState is the saved information.
+     * @return the view.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -70,6 +93,10 @@ public class WeaponListFragment extends Fragment
         return inflater.inflate(R.layout.fragment_weapon_list, container, false);
     }
 
+    /**
+     * Is called every time this fragment starts, meaning it gets the parameters of the weapons
+     * the user wants in the list this time.
+     */
     @Override
     public void onStart()
     {
@@ -78,6 +105,7 @@ public class WeaponListFragment extends Fragment
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+        //Gets the parameters to refine the list.
         Bundle args = this.getArguments();
         boolean wasList = args.getBoolean("waslist?");
         String myurl = "", thelist = "";
@@ -127,6 +155,7 @@ public class WeaponListFragment extends Fragment
 
         mListView = (ListView) getActivity().findViewById(R.id.weapon_list);
 
+        //Add a header to the list.
         if(wasList)
         {
             TextView textView = new TextView(getActivity());
@@ -145,6 +174,7 @@ public class WeaponListFragment extends Fragment
         mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mList);
 
+        //Set listener so that clicking a gun gets the detailed information.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -156,11 +186,27 @@ public class WeaponListFragment extends Fragment
         });
     }
 
+//INNER CLASS
+
+    /**
+     * A class that gets the json information from the database from a server call.
+     */
     private class WeaponWebTask extends AsyncTask<String, Void, String>
     {
 
+    //VARIABLES
+
+        /** Holds the string tag for this web task. */
         private static final String TAG = "WeaponWebTask";
 
+    //OVERWRITTEN METHODS
+
+        /**
+         * Call to the server.
+         *
+         * @param urls is the url of the server.
+         * @return the yielded stream.
+         */
         @Override
         protected String doInBackground(String...urls)
         {
@@ -174,6 +220,45 @@ public class WeaponListFragment extends Fragment
             }
         }
 
+        /**
+         * Handles all of the json information that is returned from the server call.
+         *
+         * @param s is the string json returned.
+         */
+        @Override
+        protected void onPostExecute(String s)
+        {
+            super.onPostExecute(s);
+
+            try
+            {
+                mList.clear();
+
+                JSONArray jsonArray = new JSONArray(s);
+                for(int x = 0; x < jsonArray.length(); x++)
+                {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(x);
+                    String name = (String) jsonObject.get("name");
+                    String damageType = (String) jsonObject.get("damagetype");
+                    mList.add(new WeaponInfo(name, damageType));
+                }
+                mListView.setAdapter(mAdapter);
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
+            }
+        }
+
+    //HELPER METHODS
+
+        /**
+         * gets the stream from the url.
+         *
+         * @param myurl the url we make.
+         * @return the stream.
+         * @throws IOException
+         */
         private String downloadUrl(String myurl) throws IOException
         {
             InputStream is = null;
@@ -211,37 +296,20 @@ public class WeaponListFragment extends Fragment
             return null;
         }
 
+        /**
+         * Takes the stream and reads it into a json string.
+         *
+         * @param stream that is returned from the server.
+         * @param len is how long we care about.
+         * @return the json string.
+         * @throws IOException
+         */
         public String readIt(InputStream stream, int len) throws IOException
         {
             Reader reader  = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);
             return new String(buffer);
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            super.onPostExecute(s);
-
-            try
-            {
-                mList.clear();
-
-                JSONArray jsonArray = new JSONArray(s);
-                for(int x = 0; x < jsonArray.length(); x++)
-                {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(x);
-                    String name = (String) jsonObject.get("name");
-                    String damageType = (String) jsonObject.get("damagetype");
-                    mList.add(new WeaponInfo(name, damageType));
-                }
-                mListView.setAdapter(mAdapter);
-            }
-            catch(Exception e)
-            {
-                Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
-            }
         }
     }
 }

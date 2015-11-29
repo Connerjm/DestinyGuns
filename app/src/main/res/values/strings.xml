@@ -1,11 +1,14 @@
 <resources>
+    <!-- Project wide strings. -->
     <string name="app_name">Destiny Guns</string>
     <string name="studio_name">Khaos Studios</string>
 
+    <!-- File access strings. -->
     <string name="SHARED_PREFS">edu.uw.connerjm.destinyguns.PREFS</string>
     <string name="LOGGED_IN">loggedin</string>
     <string name="USERNAME">username</string>
 
+    <!-- Normal single-use strings. -->
     <string name="refine">Choose a custom list to view or\n use the drop boxes to refine your search.</string>
     <string name="logout">Logout</string>
     <string name="register_new_user">Register New User</string>
@@ -31,6 +34,7 @@
     <string name="stats">\t\tStats-</string>
     <string name="details">\t\tDetails-</string>
 
+    <!-- PHAT strings. -->
     <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin
         and Robert Gillis. It was created as a project for mobile app development and databases
         courses at the University of Washington Tacoma. We, Conner and Robert, do not own the
@@ -45,6 +49,7 @@
         message to be taken to your mail app and email us a detailed description on the bug or
         misinformation that you have found, most importantly including how to recreate the bug.</string>
 
+    <!-- Strings arrays. -->
     <string-array name="console_spinner">
         <item>Xbox One</item>
         <item>Playstation Four</item>
@@ -80,8 +85,5 @@
         <item>Rocket Launcher</item>
         <item>Sword</item>
     </string-array>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

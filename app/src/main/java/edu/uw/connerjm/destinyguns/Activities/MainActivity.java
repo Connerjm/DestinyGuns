@@ -15,7 +15,8 @@ import edu.uw.connerjm.destinyguns.Fragments.WeaponListFragment;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
- * TODO fill with our list stuff.
+ * Holds the main fragments in our application, starting initially on the homefragment if the
+ * user had logged in previously.
  *
  * @author Conner Martin
  * @author Robert Gillis
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
 
     SharedPreferences mSharedPreferences;
 
-//INHERITED METHODS
+//OVERWRITTEN METHODS
 
     /**
      * Called when the application is first opened.
@@ -64,40 +65,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
                 startActivity(intent);
             }
         }
-    }
-
-    @Override
-    public void switchToListFragment(boolean waslist, String theList,
-                                     String rarity, String slot, String type)
-    {
-        WeaponListFragment fragment = new WeaponListFragment();
-        Bundle args = new Bundle();
-        if(waslist)
-        {
-            args.putBoolean("waslist?", true);
-            args.putString("thelist", theList);
-        }
-        else
-        {
-            args.putBoolean("waslist?", false);
-            args.putString("rarity", rarity);
-            args.putString("slot", slot);
-            args.putString("type", type);
-        }
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
-                fragment).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void switchToWeaponDetailFragment(String name)
-    {
-        WeaponDetailFragment fragment = new WeaponDetailFragment();
-        Bundle args = new Bundle();
-        args.putString("name", name);
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
-                fragment).addToBackStack(null).commit();
     }
 
     /**
@@ -142,5 +109,55 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+//INTERFACE METHODS
+
+    /**
+     * Switches from the home fragment to the refined list fitting parameters given by the fragment.
+     *
+     * @param waslist was whether or not the weapons are from a list or the spinners.
+     * @param theList is which list it was if it was a list.
+     * @param rarity is the chosen rarity.
+     * @param slot is the chosen equip slot.
+     * @param type is the weapon type.
+     */
+    @Override
+    public void switchToListFragment(boolean waslist, String theList,
+                                     String rarity, String slot, String type)
+    {
+        WeaponListFragment fragment = new WeaponListFragment();
+        Bundle args = new Bundle();
+        if(waslist)
+        {
+            args.putBoolean("waslist?", true);
+            args.putString("thelist", theList);
+        }
+        else
+        {
+            args.putBoolean("waslist?", false);
+            args.putString("rarity", rarity);
+            args.putString("slot", slot);
+            args.putString("type", type);
+        }
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
+                fragment).addToBackStack(null).commit();
+    }
+
+    /**
+     * Switches from the weapon list fragment to the specific gun fragment of the given weapon name.
+     *
+     * @param name is the name of the weapon we are getting details for.
+     */
+    @Override
+    public void switchToWeaponDetailFragment(String name)
+    {
+        WeaponDetailFragment fragment = new WeaponDetailFragment();
+        Bundle args = new Bundle();
+        args.putString("name", name);
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
+                fragment).addToBackStack(null).commit();
     }
 }

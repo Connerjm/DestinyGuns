@@ -19,13 +19,28 @@ import edu.uw.connerjm.destinyguns.Activities.LoginActivity;
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity>
 {
 
+//VARIABLES
+
+    /** Holds the solo that simulates a user using the app. */
     private Solo solo;
 
+//CONSTRUCTOR
+
+    /**
+     * Creates an instance of this test class.
+     */
     public LoginActivityTest()
     {
         super(LoginActivity.class);
     }
 
+//OVERWRITTEN METHODS
+
+    /**
+     * Called at the start to set up the test to run all of the tests.
+     *
+     * @throws Exception
+     */
     @Override
     public void setUp() throws Exception
     {
@@ -33,18 +48,31 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /**
+     * Called at the end to finish all of the activities and be done.
+     *
+     * @throws Exception
+     */
     @Override
     public void tearDown() throws Exception
     {
         solo.finishOpenedActivities();
     }
 
+//METHODS
+
+    /**
+     * Tests if the login fragment shows up.
+     */
     public void testLoginShowsUp()
     {
         boolean textFound = solo.searchText("Welcome Back!");
         assertTrue("Login Activity showed up.", textFound);
     }
 
+    /**
+     * Tests to see if it is possible to register that same email again.
+     */
     public void testRegisteringDuplicateUser()
     {
         solo.clickOnButton(1);
@@ -60,6 +88,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         assertTrue("Unable to make repeat user.", textFound2);
     }
 
+    /**
+     * Tests whether the register new user fragment comes up upon clicking register.
+     */
     public void testRegisteringNewUser()
     {
         solo.clickOnButton(1);

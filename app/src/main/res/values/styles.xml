@@ -7,13 +7,19 @@
         <item name="colorAccent">@color/orange</item>
         <item name="android:textColor">@color/orange</item>
     </style>
+
+    <!-- Activity Style. -->
     <style name="ActivityStyles" parent="AppTheme">
         <item name="android:background">@color/black</item>
     </style>
+
+    <!-- Edit Text Style. -->
     <style name="EditTextStyle" parent="AppTheme">
         <item name="android:editTextColor">@color/orange</item>
         <item name="android:textColorHint">@color/orange</item>
     </style>
+
+    <!-- Button Style. -->
     <style name="ButtonStyle" parent="AppTheme">
         <item name="android:background">@color/grey</item>
         <item name="android:padding">10dp</item>

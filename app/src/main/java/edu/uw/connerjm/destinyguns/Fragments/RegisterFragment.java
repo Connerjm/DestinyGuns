@@ -28,7 +28,7 @@ import java.net.URLEncoder;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
- * A fragment that allows the a new user to register into the database with a username and password.
+ * A fragment that allows a new user to register into the database with an email and password.
  *
  * @author Conner Martin
  * @author Robert Gillis
@@ -56,6 +56,8 @@ public class RegisterFragment extends Fragment
 //CONSTRUCTOR
 
     public RegisterFragment() {/* Required empty public constructor */}
+
+//OVERWRITTEN METHODS
 
     /**
      * Inflates the fragment_register UI and sets an

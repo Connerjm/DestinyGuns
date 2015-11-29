@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
-import edu.uw.connerjm.destinyguns.R;
 import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
+import edu.uw.connerjm.destinyguns.R;
 
 /**
  * The activity that will hold the Login and Register Fragment.
@@ -20,10 +20,11 @@ import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
 public class LoginActivity extends AppCompatActivity implements LoginFragment.MyRegisterListener
 {
 
-//INHERITED METHODS
+//OVERWRITTEN METHODS
 
     /**
      * Sets the login fragment as the default fragment.
+     *
      * @param savedInstanceState is the instance of the information.
      */
     @Override
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
         getSupportFragmentManager().beginTransaction().replace(R.id.lr_container,
                 new RegisterFragment()).addToBackStack(null).commit();
     }
+
+//INTERFACE METHODS
 
     /**
      * Changes the displayed activity from the login activity to the main activity.

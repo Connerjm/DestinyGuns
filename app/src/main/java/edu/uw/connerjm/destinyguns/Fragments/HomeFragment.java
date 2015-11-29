@@ -1,6 +1,5 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,27 +14,51 @@ import android.widget.Toast;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Is the main fragment of our application. Here is where the user will choose which weapons they
+ * want to see a list off, whether it is one of the three lists a user has access to or by using
+ * the drop down spinners to refine a list of weapons that way.
+ *
+ * @author Conner Martin
+ * @author Robert Gillis
+ * @version 0.0.02
+ * @since 29/11/2015
  */
 public class HomeFragment extends Fragment
 {
+
+//INTERFACES
 
     public interface homeInterfaceListener
     {
         void switchToListFragment(boolean wasList, String theList, String rarity, String slot, String type);
     }
 
+//VARIABLES
+
+    /** References to our buttons in the xml. */
     Button mSelectListButton;
     Button mRefineWeaponsButton;
 
+    /** The list name or resulting fields from spinners. */
     String mList;
     String mRarity;
     String mSlot;
     String mType;
 
-    public HomeFragment()
-    {/* Required empty public constructor */}
+//CONSTRUCTOR
 
+    public HomeFragment() {/* Required empty public constructor */}
+
+//OVERWRITTEN METHODS
+
+    /**
+     * Called every time to create the view.
+     *
+     * @param inflater inflates the xml layout.
+     * @param container is the parent activity.
+     * @param savedInstanceState saved information from last time.
+     * @return the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -49,6 +72,13 @@ public class HomeFragment extends Fragment
         return v;
     }
 
+//HELPER METHODS
+
+    /**
+     * Sets into motion the creation of all the bits from the xml layout.
+     *
+     * @param v is the parent view.
+     */
     private void setUp(View v)
     {
         setUpListSpinner(v);
@@ -58,6 +88,11 @@ public class HomeFragment extends Fragment
         setUpButtons(v);
     }
 
+    /**
+     * Creates the spinner that holds the three potential lists.
+     *
+     * @param v is the parent view.
+     */
     private void setUpListSpinner(View v)
     {
         Spinner userListSpinner = (Spinner) v.findViewById(R.id.user_list_spinner);
@@ -90,6 +125,11 @@ public class HomeFragment extends Fragment
         });
     }
 
+    /**
+     * Creates the spinner that holds the two different weapon rarities.
+     *
+     * @param v is the parent view.
+     */
     private void setUpRaritySpinner(View v)
     {
         Spinner raritySpinner = (Spinner) v.findViewById(R.id.weapon_rarity_spinner);
@@ -125,6 +165,11 @@ public class HomeFragment extends Fragment
         });
     }
 
+    /**
+     * Creates the spinner that holds the three different weapon equip slots.
+     *
+     * @param v is the parent view.
+     */
     private void setUpSlotSpinner(View v)
     {
         Spinner slotSpinner = (Spinner) v.findViewById(R.id.weapon_slot_spinner);
@@ -160,6 +205,11 @@ public class HomeFragment extends Fragment
         });
     }
 
+    /**
+     * Creates the spinner for the many different weapon types that we have.
+     *
+     * @param v is the parent view.
+     */
     private void setUpTypeSpinner(View v)
     {
         Spinner typeSpinner = (Spinner) v.findViewById(R.id.weapon_type_spinner);
@@ -194,6 +244,12 @@ public class HomeFragment extends Fragment
         });
     }
 
+    /**
+     * Creates the two buttons and their listeners, one for selecting a list, the other for
+     * refineing using the spinners.
+     *
+     * @param v is the parent view.
+     */
     private void setUpButtons(View v)
     {
         mSelectListButton = (Button) v.findViewById(R.id.choose_list_button);
@@ -227,6 +283,11 @@ public class HomeFragment extends Fragment
         });
     }
 
+    /**
+     * Checks the validity of the slot and type combo as types have specific slots.
+     *
+     * @return whether the combination is correct or not.
+     */
     private boolean isValidRequest()
     {
         boolean isValid = false;

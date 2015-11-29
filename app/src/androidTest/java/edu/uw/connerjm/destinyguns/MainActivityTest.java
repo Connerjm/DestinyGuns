@@ -17,13 +17,28 @@ import edu.uw.connerjm.destinyguns.Activities.MainActivity;
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>
 {
 
+//VARIABLES
+
+    /** Holds the solo that simulates a user using the application. */
     private Solo solo;
 
+//CONSTRUCTOR
+
+    /**
+     * Creates a new instance of this test.
+     */
     public MainActivityTest()
     {
         super(MainActivity.class);
     }
 
+//OVERWRITTEN METHODS
+
+    /**
+     * Called at the start to prepare for all of the tests.
+     *
+     * @throws Exception
+     */
     @Override
     public void setUp() throws Exception
     {
@@ -31,12 +46,22 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+    /**
+     * Called at the end to finalize the ending of the tests.
+     *
+     * @throws Exception
+     */
     @Override
     public void tearDown() throws Exception
     {
         solo.finishOpenedActivities();
     }
 
+//METHODS
+
+    /**
+     * Tests if the home fragment shows up.
+     */
     public void testHomeShowsUp()
     {
         boolean textFound = solo.searchText("View Selected List");
@@ -44,6 +69,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTrue("Home fragment showed up.", textFound);
     }
 
+    /**
+     * Tests if you can select one of the three lists and view the weapons in it.
+     */
     public void testSelectingList()
     {
         solo.clickOnText("Select a List");
@@ -53,6 +81,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTrue("Could select a list and press the go to list button.", textFound);
     }
 
+    /**
+     * Tests if you can refine a list with the spinners and view the resulting list.
+     */
     public void testRefiningList()
     {
         solo.clickOnText("Select a Rarity");
@@ -67,6 +98,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
                 "press refine button and get results.", textFound);
     }
 
+    /**
+     * Tests if you can click the button in the menu and go to the info fragment.
+     */
     public void testMoveToInfo()
     {
         solo.clickOnMenuItem("App Info");
@@ -74,6 +108,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTrue("Can switch from main to info activity.", textFound);
     }
 
+    /**
+     * Tests if you can log out and the back in again.
+     */
     public void testLogInAndOut()
     {
         solo.clickOnMenuItem("Logout");
@@ -86,6 +123,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTrue("Able to log back in.", textFound2);
     }
 
+    /**
+     * Tests for validation.
+     */
     public void testWeaponRefineValidation()
     {
         solo.clickOnText("Select a Rarity");

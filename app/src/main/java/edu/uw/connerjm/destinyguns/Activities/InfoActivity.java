@@ -17,6 +17,13 @@ import edu.uw.connerjm.destinyguns.R;
 public class InfoActivity extends AppCompatActivity
 {
 
+//OVERWRITTEN METHODS
+
+    /**
+     * Creates and shows the activity that has all of our text views in it.
+     *
+     * @param savedInstanceState the saved information from before.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
