@@ -25,6 +25,11 @@
     <string name="choose_list">View Selected List</string>
     <string name="refine_weapons">Refine the List</string>
     <string name="not_valid">Not a valid slot and weapon type combination.</string>
+    <string name="fav">Favourite</string>
+    <string name="owned">Owned</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="stats">\t\tStats-</string>
+    <string name="details">\t\tDetails-</string>
 
     <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin
         and Robert Gillis. It was created as a project for mobile app development and databases

@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
                 .addToBackStack(null).commit();
 
         //Use shared preferences file to check if user has logged in previously.
-        mSharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS), MODE_PRIVATE);
+        mSharedPreferences =
+                getSharedPreferences(getString(R.string.SHARED_PREFS), MODE_PRIVATE);
         if(savedInstanceState != null)
         {
             return;
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
     }
 
     @Override
-    public void switchToListFragment(boolean waslist, String theList, String rarity, String slot, String type)
+    public void switchToListFragment(boolean waslist, String theList,
+                                     String rarity, String slot, String type)
     {
         WeaponListFragment fragment = new WeaponListFragment();
         Bundle args = new Bundle();

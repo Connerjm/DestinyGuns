@@ -39,14 +39,14 @@ import edu.uw.connerjm.destinyguns.R;
 public class WeaponListFragment extends Fragment
 {
 
-    private static final String
-            refineURL = "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
-    private static final String
-            favouriteListURL = "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
-    private static final String
-            ownedListURL = "http://cssgate.insttech.washington.edu/~connerjm/viewOwned.php";
-    private static final String
-            wishlistURL = "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
+    private static final String refineURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
+    private static final String favouriteListURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
+    private static final String ownedListURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/viewOwned.php";
+    private static final String wishlistURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
 
     private List<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
@@ -68,8 +68,8 @@ public class WeaponListFragment extends Fragment
     public void onStart()
     {
         super.onStart();
-        ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(
-                Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         Bundle args = this.getArguments();
@@ -91,7 +91,9 @@ public class WeaponListFragment extends Fragment
                     myurl = wishlistURL;
                     break;
             }
-            mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), getActivity().MODE_PRIVATE);
+            mSharedPreferences =
+                    getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS),
+                            getActivity().MODE_PRIVATE);
             myurl += "?email=" + mSharedPreferences.getString(getString(R.string.USERNAME), null);
         }
         else
