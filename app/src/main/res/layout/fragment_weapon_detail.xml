@@ -172,7 +172,13 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textSize="18sp"
-                android:text="@string/details"
+                android:text="@string/details"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="18sp"
                 android:id="@+id/detail_details_text"/>
 
         </LinearLayout>
