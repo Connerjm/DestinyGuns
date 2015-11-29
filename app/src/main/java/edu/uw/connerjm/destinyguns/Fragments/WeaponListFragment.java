@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +39,11 @@ import edu.uw.connerjm.destinyguns.R;
  */
 public class WeaponListFragment extends Fragment
 {
+
+    public interface weaponListListener
+    {
+        void switchToWeaponDetailFragment(String name);
+    }
 
     private static final String refineURL =
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
@@ -92,8 +98,7 @@ public class WeaponListFragment extends Fragment
                     break;
             }
             mSharedPreferences =
-                    getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS),
-                            getActivity().MODE_PRIVATE);
+                    getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
             myurl += "?email=" + mSharedPreferences.getString(getString(R.string.USERNAME), null);
         }
         else
@@ -139,6 +144,16 @@ public class WeaponListFragment extends Fragment
 
         mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mList);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                ((weaponListListener)
+                        getActivity()).switchToWeaponDetailFragment(mList.get(position - 1).mName);
+            }
+        });
     }
 
     private class WeaponWebTask extends AsyncTask<String, Void, String>

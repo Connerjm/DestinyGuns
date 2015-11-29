@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import edu.uw.connerjm.destinyguns.Fragments.HomeFragment;
+import edu.uw.connerjm.destinyguns.Fragments.WeaponDetailFragment;
 import edu.uw.connerjm.destinyguns.Fragments.WeaponListFragment;
 import edu.uw.connerjm.destinyguns.R;
 
@@ -21,7 +22,8 @@ import edu.uw.connerjm.destinyguns.R;
  * @version 0.0.01
  * @since 14/11/2015
  */
-public class MainActivity extends AppCompatActivity implements HomeFragment.homeInterfaceListener
+public class MainActivity extends AppCompatActivity implements HomeFragment.homeInterfaceListener,
+        WeaponListFragment.weaponListListener
 {
 
 //VARIABLES
@@ -77,11 +79,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
         }
         else
         {
-            args.putBoolean("waslist?", waslist);
+            args.putBoolean("waslist?", false);
             args.putString("rarity", rarity);
             args.putString("slot", slot);
             args.putString("type", type);
         }
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
+                fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void switchToWeaponDetailFragment(String name)
+    {
+        WeaponDetailFragment fragment = new WeaponDetailFragment();
+        Bundle args = new Bundle();
+        args.putString("name", name);
         fragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_activity,
                 fragment).addToBackStack(null).commit();
