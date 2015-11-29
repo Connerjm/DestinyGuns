@@ -3,6 +3,7 @@
     <color name="grey">#515151</color>
     <color name="black">#000000</color>
     <color name="orange">#FF8C00</color>
+    <color name="red">#c73905</color>
     <color name="debug">#FF00FF</color>
     <color name="legendary">#CF41BE</color>
     <color name="exotic">#FAC029</color>

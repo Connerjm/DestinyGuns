@@ -45,6 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    style="@style/ButtonStyle"
                     android:text="@string/fav"
                     android:id="@+id/detail_favourite_button"/>
 
@@ -52,6 +53,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    style="@style/ButtonStyle"
                     android:text="@string/owned"
                     android:id="@+id/detail_owned_button"/>
 
@@ -59,18 +61,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    style="@style/ButtonStyle"
                     android:text="@string/wishlist"
                     android:id="@+id/detail_wishlist_button"/>
 
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColor="@color/red"
                 android:id="@+id/detail_exlusive_text"/>
 
             <LinearLayout

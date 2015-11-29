@@ -191,6 +191,8 @@ public class WeaponDetailFragment extends Fragment
         {
             super.onPostExecute(s);
 
+            final String TAG = "Getting fields from JSON";
+
             try
             {
                 JSONArray jsonArray = new JSONArray(s);
@@ -212,69 +214,53 @@ public class WeaponDetailFragment extends Fragment
                 }
                 mPerks.setText((String) jsonObject.get("perks"));
                 mAcquire.setText((String) jsonObject.get("acquire"));
-                String details = (String) jsonObject.get("details");
-                if(!details.isEmpty())//Was !details.equals(null)
+                if(!jsonObject.isNull("details"))
                 {
-                    mDetails.setText(details);
+                    mDetails.setText((String) jsonObject.get("details"));
                 }
-                String exclusive = (String) jsonObject.get("gatedfor");
-                if(!exclusive.isEmpty())
+                if(!jsonObject.isNull("gatedfor"))
                 {
-                    mExclusive.setText(exclusive);
+                    mExclusive.setText("!" + jsonObject.get("gatedfor") + " exclusive!");
                 }
-
-                String rateOfFire = (String) jsonObject.get("rateoffire");
-                String impact = (String) jsonObject.get("impact");
-                String range = (String) jsonObject.get("range");
-                String stability = (String) jsonObject.get("stability");
-                String reload = (String) jsonObject.get("reload");
-                String magazine = (String) jsonObject.get("magazine");
-                String chargeRate = (String) jsonObject.get("chargerate");
-                String speed = (String) jsonObject.get("speed");
-                String efficiency = (String) jsonObject.get("efficiency");
-                String defence = (String) jsonObject.get("defence");
-                String energy = (String) jsonObject.get("energy");
-                String blastRadius = (String) jsonObject.get("blastradius");
-                String velocity = (String) jsonObject.get("velocity");
 
                 String type = mType.getText().toString();
 
                 if(type.equalsIgnoreCase("fusion rifle"))
                 {
-                    mStatOne.setText("Charge Rate: " + chargeRate);
-                    mStatTwo.setText("Impact: " + impact);
-                    mStatThree.setText("Range: " + range);
-                    mStatFour.setText("Stability: " + stability);
-                    mStatFive.setText("Reload: " + reload);
-                    mStatSix.setText("Magazine: " + magazine);
+                    mStatOne.setText("Charge Rate: " + jsonObject.get("chargerate"));
+                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
+                    mStatThree.setText("Range: " + jsonObject.get("range"));
+                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
+                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
+                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
                 }
                 else if(type.equalsIgnoreCase("rocket launcher"))
                 {
-                    mStatOne.setText("Rate of Fire: " + rateOfFire);
-                    mStatTwo.setText("Blast Radius: " + blastRadius);
-                    mStatThree.setText("Velocity: " + velocity);
-                    mStatFour.setText("Stability: " + stability);
-                    mStatFive.setText("Reload: " + reload);
-                    mStatSix.setText("Magazine: " + magazine);
+                    mStatOne.setText("Rate of Fire: " + jsonObject.get("rateoffire"));
+                    mStatTwo.setText("Blast Radius: " + jsonObject.get("blastradius"));
+                    mStatThree.setText("Velocity: " + jsonObject.get("velocity"));
+                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
+                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
+                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
                 }
                 else if(type.equalsIgnoreCase("sword"))
                 {
-                    mStatOne.setText("Speed: " + speed);
-                    mStatTwo.setText("Impact: " + impact);
-                    mStatThree.setText("Range: " + range);
-                    mStatFour.setText("Efficiency: " + efficiency);
-                    mStatFive.setText("Defense: " + defence);
-                    mStatSix.setText("Energy: " + energy);
-                    mStatSeven.setText("Magazine: " + magazine);
+                    mStatOne.setText("Speed: " + jsonObject.get("speed"));
+                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
+                    mStatThree.setText("Range: " + jsonObject.get("range"));
+                    mStatFour.setText("Efficiency: " + jsonObject.get("efficiency"));
+                    mStatFive.setText("Defense: " + jsonObject.get("defence"));
+                    mStatSix.setText("Energy: " + jsonObject.get("energy"));
+                    mStatSeven.setText("Magazine: " + jsonObject.get("magazine"));
                 }
                 else
                 {
-                    mStatOne.setText("Rate of Fire: " + rateOfFire);
-                    mStatTwo.setText("Impact: " + impact);
-                    mStatThree.setText("Range: " + range);
-                    mStatFour.setText("Stability: " + stability);
-                    mStatFive.setText("Reload: " + reload);
-                    mStatSix.setText("Magazine: " + magazine);
+                    mStatOne.setText("Rate of Fire: " + jsonObject.get("rateoffire"));
+                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
+                    mStatThree.setText("Range: " + jsonObject.get("range"));
+                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
+                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
+                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
                 }
             }
             catch(Exception e)
