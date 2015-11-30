@@ -2,6 +2,7 @@ package edu.uw.connerjm.destinyguns.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,13 +147,10 @@ public class HomeFragment extends Fragment
                 {
                     //TODO enable other spinners items.
                     mRarity = null;
-                    mRefineWeaponsButton.setEnabled(false);
-                }
-                else
+                } else
                 {
                     //TODO disable other spinners items.
                     mRarity = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -160,7 +158,6 @@ public class HomeFragment extends Fragment
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mRarity = null;
-                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
@@ -186,13 +183,10 @@ public class HomeFragment extends Fragment
                 {
                     //TODO enable other spinners items.
                     mSlot = null;
-                    mRefineWeaponsButton.setEnabled(false);
-                }
-                else
+                } else
                 {
                     //TODO disable other spinners items.
                     mSlot = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -200,7 +194,6 @@ public class HomeFragment extends Fragment
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mSlot = null;
-                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
@@ -226,12 +219,10 @@ public class HomeFragment extends Fragment
                 {
                     //TODO enable other spinners items.
                     mType = null;
-                    mRefineWeaponsButton.setEnabled(false);
                 } else
                 {
                     //TODO disable other spinners items.
                     mType = (String) parent.getItemAtPosition(position);
-                    mRefineWeaponsButton.setEnabled(true);
                 }
             }
 
@@ -239,7 +230,6 @@ public class HomeFragment extends Fragment
             public void onNothingSelected(AdapterView<?> parent)
             {
                 mType = null;
-                mRefineWeaponsButton.setEnabled(false);
             }
         });
     }
@@ -264,20 +254,57 @@ public class HomeFragment extends Fragment
         });
 
         mRefineWeaponsButton = (Button) v.findViewById(R.id.refine_list_button);
-        mRefineWeaponsButton.setEnabled(false);
         mRefineWeaponsButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                if(isValidRequest())
+                final String TAG = "spinners testing";
+
+                boolean raritySet = !(mRarity == null);
+                boolean slotSet = !(mSlot == null);
+                boolean typeSet = !(mType == null);
+                if(raritySet && !slotSet && !typeSet)
                 {
-                    ((homeInterfaceListener) getActivity()).switchToListFragment(false, null, mRarity, mSlot, mType);
+                    Log.d(TAG, "rarity");
                 }
-                else
+                else if(!raritySet && slotSet && !typeSet)
                 {
-                    Toast.makeText(v.getContext(), getString(R.string.not_valid),
-                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "slot");
+                }
+                else if(!raritySet && !slotSet && typeSet)
+                {
+                    Log.d(TAG, "type");
+                }
+                else if(raritySet && slotSet && !typeSet)
+                {
+                    Log.d(TAG, "rarity and slot");
+                }
+                else if(raritySet && !slotSet)
+                {
+                    Log.d(TAG, "rarity  and type");
+                }
+                else if(!raritySet && slotSet)
+                {
+                    Log.d(TAG, "slot and type");
+                }
+                else if(!raritySet)
+                {
+                    Log.d(TAG, "none");
+                }
+                else//All are set
+                {
+                    Log.d(TAG, "all");
+                    if(isValidRequest())
+                    {
+                        ((homeInterfaceListener) getActivity())
+                                .switchToListFragment(false, null, mRarity, mSlot, mType);
+                    }
+                    else
+                    {
+                        Toast.makeText(v.getContext(), getString(R.string.not_valid),
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
