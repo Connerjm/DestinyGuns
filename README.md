@@ -21,5 +21,3 @@ More tests.
 Tweak the refinement of the lists so that the user can use any combination of the three spinners.
 
 # Known Bugs.
-Weapons with a weird character in there name (and maybe their flavour text field) will yield no
-results in the list being empty if it would contain that weapon.
