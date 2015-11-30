@@ -109,7 +109,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     /**
-     * Tests if you can log out and the back in again.
+     * Tests if you can log out and back in again.
      */
     public void testLogInAndOut()
     {
