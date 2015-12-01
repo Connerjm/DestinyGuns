@@ -21,10 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -59,6 +57,14 @@ public class WeaponListFragment extends Fragment
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
     private static final String refineRarityURL =
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListRarity.php";
+    private static final String refineSlotURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListSlot.php";
+    private static final String refineTypeURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListType.php";
+    private static final String refineRarityAndSlotURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListRarityAndSlot.php";
+    private static final String refineAllURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListAll.php";
     private static final String favouriteListURL =
             "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
     private static final String ownedListURL =
@@ -70,9 +76,6 @@ public class WeaponListFragment extends Fragment
     private List<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
     private ArrayAdapter mAdapter;
-
-    /** Holds that shared prefs file that holds the username. */
-    private SharedPreferences mSharedPreferences;
 
 //CONSTRUCTOR
 
@@ -131,9 +134,9 @@ public class WeaponListFragment extends Fragment
                     myurl = wishlistURL;
                     break;
             }
-            mSharedPreferences =
+            SharedPreferences sharedPreferences =
                     getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
-            myurl += "?email=" + mSharedPreferences.getString(getString(R.string.USERNAME), null);
+            myurl += "?email=" + sharedPreferences.getString(getString(R.string.USERNAME), null);
         }
         else if(!(rarity == null) && (slot == null) && (type == null))//just rarity
         {
@@ -142,18 +145,30 @@ public class WeaponListFragment extends Fragment
         }
         else if((rarity == null) && !(slot == null) && (type == null))//just slot
         {
+            myurl = refineSlotURL;
+            myurl += "?slot=" + slot.toLowerCase();
         }
-        else if((rarity == null) && (slot == null) && !(type == null))//just type
+        else if((rarity == null) && (slot == null) && !(type == null)
+                || ((rarity == null) && !(slot == null)))//just type or slot and type
         {
+            myurl = refineTypeURL;
+            try
+            {
+                myurl += "?type=" + URLEncoder.encode(type, "UTF-8");
+            }
+            catch(Exception e)
+            {
+                Log.d("WeaponListURLEncoding", "Error encoding " + e.getMessage());
+            }
         }
         else if(!(rarity == null) && !(slot == null) && (type == null))//rarity and slot
         {
-        }
-        else if((rarity == null) && !(slot == null))//slot and type
-        {
+            myurl = refineRarityAndSlotURL;
+            myurl += "?rarity=" + rarity + "&slot=" + slot.toLowerCase();
         }
         else if((rarity == null))//none
         {
+            myurl = refineAllURL;
         }
         else//rarity and type or all three.
         {
@@ -298,24 +313,6 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
             }
-        }
-
-    //HELPER METHODS
-
-        /**
-         * Takes the stream and reads it into a json string.
-         *
-         * @param stream that is returned from the server.
-         * @param len is how long we care about.
-         * @return the json string.
-         * @throws IOException
-         */
-        public String readIt(InputStream stream, int len) throws IOException
-        {
-            Reader reader  = new InputStreamReader(stream, "UTF-8");
-            char[] buffer = new char[len];
-            reader.read(buffer);
-            return new String(buffer);
         }
     }
 }

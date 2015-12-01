@@ -273,14 +273,20 @@ public class HomeFragment extends Fragment
                 else if(!raritySet && slotSet && !typeSet)//just slot
                 {
                     Log.d(TAG, "slot");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, null, mSlot, null);
                 }
                 else if(!raritySet && !slotSet && typeSet)//just type
                 {
                     Log.d(TAG, "type");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, null, null, mType);
                 }
                 else if(raritySet && slotSet && !typeSet)//rarity and slot
                 {
                     Log.d(TAG, "rarity and slot");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, mRarity, mSlot, null);
                 }
                 else if(raritySet && !slotSet)//rarity and type (the normal all set url.)
                 {
@@ -291,10 +297,22 @@ public class HomeFragment extends Fragment
                 else if(!raritySet && slotSet)//slot and type
                 {
                     Log.d(TAG, "slot and type");
+                    if(isValidRequest())
+                    {
+                        ((homeInterfaceListener) getActivity())
+                                .switchToListFragment(false, null, null, mSlot, mType);
+                    }
+                    else
+                    {
+                        Toast.makeText(v.getContext(), getString(R.string.not_valid),
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
                 else if(!raritySet)//none
                 {
                     Log.d(TAG, "none");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, null, null, null);
                 }
                 else//all are set
                 {
