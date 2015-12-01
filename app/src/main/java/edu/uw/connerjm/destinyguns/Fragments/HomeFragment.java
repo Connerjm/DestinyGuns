@@ -264,35 +264,39 @@ public class HomeFragment extends Fragment
                 boolean raritySet = !(mRarity == null);
                 boolean slotSet = !(mSlot == null);
                 boolean typeSet = !(mType == null);
-                if(raritySet && !slotSet && !typeSet)
+                if(raritySet && !slotSet && !typeSet)//just rarity
                 {
                     Log.d(TAG, "rarity");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, mRarity, null, null);
                 }
-                else if(!raritySet && slotSet && !typeSet)
+                else if(!raritySet && slotSet && !typeSet)//just slot
                 {
                     Log.d(TAG, "slot");
                 }
-                else if(!raritySet && !slotSet && typeSet)
+                else if(!raritySet && !slotSet && typeSet)//just type
                 {
                     Log.d(TAG, "type");
                 }
-                else if(raritySet && slotSet && !typeSet)
+                else if(raritySet && slotSet && !typeSet)//rarity and slot
                 {
                     Log.d(TAG, "rarity and slot");
                 }
-                else if(raritySet && !slotSet)
+                else if(raritySet && !slotSet)//rarity and type (the normal all set url.)
                 {
                     Log.d(TAG, "rarity  and type");
+                    ((homeInterfaceListener) getActivity())
+                            .switchToListFragment(false, null, mRarity, mSlot, mType);
                 }
-                else if(!raritySet && slotSet)
+                else if(!raritySet && slotSet)//slot and type
                 {
                     Log.d(TAG, "slot and type");
                 }
-                else if(!raritySet)
+                else if(!raritySet)//none
                 {
                     Log.d(TAG, "none");
                 }
-                else//All are set
+                else//all are set
                 {
                     Log.d(TAG, "all");
                     if(isValidRequest())

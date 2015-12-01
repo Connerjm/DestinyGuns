@@ -20,6 +20,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,6 +57,8 @@ public class WeaponListFragment extends Fragment
     /** The different urls that we need to talk to the server. */
     private static final String refineURL =
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponList.php";
+    private static final String refineRarityURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListRarity.php";
     private static final String favouriteListURL =
             "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
     private static final String ownedListURL =
@@ -109,8 +112,11 @@ public class WeaponListFragment extends Fragment
         Bundle args = this.getArguments();
         boolean wasList = args.getBoolean("waslist?");
         String myurl = "", thelist = "";
+        String rarity = args.getString("rarity");
+        String slot = args.getString("slot");
+        String type = args.getString("type");
 
-        if(wasList)
+        if(wasList)//From a list.
         {
             thelist = args.getString("thelist");
             switch(thelist)
@@ -129,13 +135,33 @@ public class WeaponListFragment extends Fragment
                     getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
             myurl += "?email=" + mSharedPreferences.getString(getString(R.string.USERNAME), null);
         }
-        else
+        else if(!(rarity == null) && (slot == null) && (type == null))//just rarity
+        {
+            myurl = refineRarityURL;
+            myurl += "?rarity=" + rarity;
+        }
+        else if((rarity == null) && !(slot == null) && (type == null))//just slot
+        {
+        }
+        else if((rarity == null) && (slot == null) && !(type == null))//just type
+        {
+        }
+        else if(!(rarity == null) && !(slot == null) && (type == null))//rarity and slot
+        {
+        }
+        else if((rarity == null) && !(slot == null))//slot and type
+        {
+        }
+        else if((rarity == null))//none
+        {
+        }
+        else//rarity and type or all three.
         {
             myurl = refineURL;
-            myurl += "?rarity=" + args.getString("rarity");
+            myurl += "?rarity=" + rarity;
             try
             {
-                myurl += "&type=" + URLEncoder.encode(args.getString("type"), "UTF-8");
+                myurl += "&type=" + URLEncoder.encode(type, "UTF-8");
             }
             catch(Exception e)
             {
@@ -210,14 +236,38 @@ public class WeaponListFragment extends Fragment
         @Override
         protected String doInBackground(String...urls)
         {
-            try
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for(String url : urls)
             {
-                return downloadUrl(urls[0]);
+                try
+                {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new
+                            InputStreamReader(content));
+                    String s;
+                    while((s = buffer.readLine()) != null)
+                    {
+                        response += s;
+                    }
+                }
+                catch(Exception e)
+                {
+                    response = "Unable to download because " + e.getMessage();
+                }
+                finally
+                {
+                    if(urlConnection != null)
+                    {
+                        urlConnection.disconnect();
+                    }
+                }
             }
-            catch(IOException e)
-            {
-                return "Unable to retrieve web page. URL may be invalid.";
-            }
+            return response;
         }
 
         /**
@@ -251,50 +301,6 @@ public class WeaponListFragment extends Fragment
         }
 
     //HELPER METHODS
-
-        /**
-         * gets the stream from the url.
-         *
-         * @param myurl the url we make.
-         * @return the stream.
-         * @throws IOException
-         */
-        private String downloadUrl(String myurl) throws IOException
-        {
-            InputStream is = null;
-            int len = 500;
-
-            try
-            {
-                URL url = new URL(myurl);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d(TAG, "The response is: " + response);
-                is= conn.getInputStream();
-
-                String contentAsString = readIt(is, len);
-                Log.d(TAG, "The string is: " + contentAsString);
-                return contentAsString;
-            }
-            catch(Exception e)
-            {
-                Log.d(TAG, "Something happened " + e.getMessage());
-            }
-            finally
-            {
-                if (is != null)
-                {
-                    is.close();
-                }
-            }
-            return null;
-        }
 
         /**
          * Takes the stream and reads it into a json string.
