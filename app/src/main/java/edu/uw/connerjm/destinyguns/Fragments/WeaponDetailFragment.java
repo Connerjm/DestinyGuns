@@ -69,7 +69,7 @@ public class WeaponDetailFragment extends Fragment
 //OVERWRITTEN METHODS
 
     /**
-     * Get references fronm all the associated xml.
+     * Get references from all the associated xml.
      *
      * @param inflater inflates the layout.
      * @param container is the parent activity.

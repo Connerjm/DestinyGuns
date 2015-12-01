@@ -18,6 +18,6 @@ Incorporate pictures in the list and/or detailed weapon pages.
 
 More tests.
 
-Tweak the refinement of the lists so that the user can use any combination of the three spinners.
-
 # Known Bugs.
+
+If the user attempts to access one of their lists but the list is empty, it shows nothing.
