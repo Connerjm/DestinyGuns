@@ -100,13 +100,34 @@ public class WeaponDetailFragment extends Fragment
         mDetails = (TextView) v.findViewById(R.id.detail_details_text);
 
         Button mFavourite = (Button) v.findViewById(R.id.detail_favourite_button);
+        mFavourite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
+            }
+        });
 
         Button mOwned = (Button) v.findViewById(R.id.detail_owned_button);
+        mOwned.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
+            }
+        });
 
         Button mWishlist = (Button) v.findViewById(R.id.detail_wishlist_button);
+        mWishlist.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
 
+            }
+        });
 
         return v;
     }
