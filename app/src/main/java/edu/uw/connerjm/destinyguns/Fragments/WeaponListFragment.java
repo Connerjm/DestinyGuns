@@ -107,6 +107,13 @@ public class WeaponListFragment extends Fragment
     public void onStart()
     {
         super.onStart();
+
+        mListView = (ListView) getActivity().findViewById(R.id.weapon_list);
+        TextView textView = new TextView(getActivity());
+
+        mAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, mList);
+
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -114,7 +121,7 @@ public class WeaponListFragment extends Fragment
         //Gets the parameters to refine the list.
         Bundle args = this.getArguments();
         boolean wasList = args.getBoolean("waslist?");
-        String myurl = "", thelist = "";
+        String myurl = "", thelist;
         String rarity = args.getString("rarity");
         String slot = args.getString("slot");
         String type = args.getString("type");
@@ -137,16 +144,20 @@ public class WeaponListFragment extends Fragment
             SharedPreferences sharedPreferences =
                     getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
             myurl += "?email=" + sharedPreferences.getString(getString(R.string.USERNAME), null);
+
+            textView.setText("Your " + thelist + " Weapons");
         }
         else if(!(rarity == null) && (slot == null) && (type == null))//just rarity
         {
             myurl = refineRarityURL;
             myurl += "?rarity=" + rarity;
+            textView.setText(rarity + " " + "Weapons");
         }
         else if((rarity == null) && !(slot == null) && (type == null))//just slot
         {
             myurl = refineSlotURL;
             myurl += "?slot=" + slot.toLowerCase();
+            textView.setText(slot + " " + "Weapons");
         }
         else if((rarity == null) && (slot == null) && !(type == null)
                 || ((rarity == null) && !(slot == null)))//just type or slot and type
@@ -160,15 +171,18 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d("WeaponListURLEncoding", "Error encoding " + e.getMessage());
             }
+            textView.setText(type + " " + "s");
         }
         else if(!(rarity == null) && !(slot == null) && (type == null))//rarity and slot
         {
             myurl = refineRarityAndSlotURL;
             myurl += "?rarity=" + rarity + "&slot=" + slot.toLowerCase();
+            textView.setText(rarity + " " + slot + " " + "Weapons");
         }
         else if((rarity == null))//none
         {
             myurl = refineAllURL;
+            textView.setText("All weapons");
         }
         else//rarity and type or all three.
         {
@@ -182,7 +196,9 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d("WeaponListURLEncoding", "Error in encoding is " + e.getMessage());
             }
+            textView.setText(rarity + " " + type + "s");
         }
+        mListView.addHeaderView(textView);
 
         if(networkInfo != null && networkInfo.isConnected())
         {
@@ -193,27 +209,6 @@ public class WeaponListFragment extends Fragment
             Toast.makeText(getActivity(), "No network connection available.",
                     Toast.LENGTH_LONG).show();
         }
-
-        mListView = (ListView) getActivity().findViewById(R.id.weapon_list);
-
-        //Add a header to the list.
-        if(wasList)
-        {
-            TextView textView = new TextView(getActivity());
-            textView.setText("Your " + thelist + " weapon's");
-
-            mListView.addHeaderView(textView);
-        }
-        else
-        {
-            TextView textView = new TextView(getActivity());
-            textView.setText(args.getString("rarity") + " " + args.getString("type") + "'s");
-
-            mListView.addHeaderView(textView);
-        }
-
-        mAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, mList);
 
         //Set listener so that clicking a gun gets the detailed information.
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
