@@ -171,7 +171,7 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d("WeaponListURLEncoding", "Error encoding " + e.getMessage());
             }
-            textView.setText(type + " " + "s");
+            textView.setText(type + "s");
         }
         else if(!(rarity == null) && !(slot == null) && (type == null))//rarity and slot
         {

@@ -7,14 +7,16 @@ Tacoma with Robert Gillis.
 Clicking on the bug report with need to either that the user to their mail app, or we will create 
 an email and send it ourselves in the code.
 
-Social media login (either Facebook or Google).
+Social media login (either Facebook or Google). Maybe
 
 Buttons on the weapon details page need to create or delete the correct entry in the corresponding
- table in the database.
+ table in the database. SQLite
  
 Those buttons also need to be switched to icons.
 
 Incorporate pictures in the list and/or detailed weapon pages.
+
+Implement changing the average rank of a gun based off of user voting.
 
 More tests.
 

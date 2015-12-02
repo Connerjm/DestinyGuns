@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import edu.uw.connerjm.destinyguns.Data.Database;
 import edu.uw.connerjm.destinyguns.R;
 
 /**
@@ -61,6 +62,14 @@ public class WeaponDetailFragment extends Fragment
     private TextView mStatSix;
     private TextView mStatSeven;
     private TextView mDetails;
+
+    private ImageButton mFavourite;
+    private ImageButton mOwned;
+    private ImageButton mWishlist;
+
+    private boolean favClicked;
+    private boolean ownedClicked;
+    private boolean wishClicked;
 
 //CONSTRUCTOR
 
@@ -99,33 +108,54 @@ public class WeaponDetailFragment extends Fragment
         mStatSeven = (TextView) v.findViewById(R.id.detail_stat_seven_text);
         mDetails = (TextView) v.findViewById(R.id.detail_details_text);
 
-        Button mFavourite = (Button) v.findViewById(R.id.detail_favourite_button);
+        mFavourite = (ImageButton) v.findViewById(R.id.detail_favourite_button);
         mFavourite.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
+                if(favClicked)
+                {
+                    //Remove from list
+                }
+                else
+                {
+                    //add to list
+                }
             }
         });
 
-        Button mOwned = (Button) v.findViewById(R.id.detail_owned_button);
+        mOwned = (ImageButton) v.findViewById(R.id.detail_owned_button);
         mOwned.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
+                if(ownedClicked)
+                {
+                    //Remove from list
+                }
+                else
+                {
+                    //add to list
+                }
             }
         });
 
-        Button mWishlist = (Button) v.findViewById(R.id.detail_wishlist_button);
+        mWishlist = (ImageButton) v.findViewById(R.id.detail_wishlist_button);
         mWishlist.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
+                if(wishClicked)
+                {
+                    //Remove from list
+                }
+                else
+                {
+                    //add to list
+                }
             }
         });
 
@@ -164,6 +194,37 @@ public class WeaponDetailFragment extends Fragment
         {
             Toast.makeText(getActivity(), "No network connection available.",
                     Toast.LENGTH_LONG).show();
+        }
+
+        Database db = new Database(getContext());
+        favClicked = db.isGunInList(name, "favourite");
+        ownedClicked = db.isGunInList(name, "owned");
+        wishClicked = db.isGunInList(name, "wishlist");
+        db.closeDB();
+
+        if(favClicked)
+        {
+            mFavourite.setImageResource(R.drawable.ic_favourite_filled);
+        }
+        else
+        {
+            mFavourite.setImageResource(R.drawable.ic_favourite_border);
+        }
+        if(ownedClicked)
+        {
+            mOwned.setImageResource(R.drawable.ic_check_double);
+        }
+        else
+        {
+            mOwned.setImageResource(R.drawable.ic_check_single);
+        }
+        if(wishClicked)
+        {
+            mWishlist.setImageResource(R.drawable.ic_wishlist_filled);
+        }
+        else
+        {
+            mWishlist.setImageResource(R.drawable.ic_wishlist_border);
         }
     }
 

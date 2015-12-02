@@ -41,28 +41,25 @@
                 android:padding="10dp"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ButtonStyle"
-                    android:text="@string/fav"
                     android:id="@+id/detail_favourite_button"/>
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ButtonStyle"
-                    android:text="@string/owned"
                     android:id="@+id/detail_owned_button"/>
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     style="@style/ButtonStyle"
-                    android:text="@string/wishlist"
                     android:id="@+id/detail_wishlist_button"/>
 
             </LinearLayout>

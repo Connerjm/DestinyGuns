@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.home
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportFragmentManager().beginTransaction().add(R.id.main_activity, new HomeFragment())
-                .addToBackStack(null).commit();
+                .commit();
 
         //Use shared preferences file to check if user has logged in previously.
         mSharedPreferences =
