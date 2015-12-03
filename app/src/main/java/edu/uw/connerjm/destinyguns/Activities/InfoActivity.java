@@ -1,7 +1,11 @@
 package edu.uw.connerjm.destinyguns.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.uw.connerjm.destinyguns.R;
 
@@ -11,7 +15,7 @@ import edu.uw.connerjm.destinyguns.R;
  *
  * @author Conner Martin
  * @author Robert Gillis
- * @version 0.0.01
+ * @version 0.0.02
  * @since 20/11/2015
  */
 public class InfoActivity extends AppCompatActivity
@@ -29,5 +33,27 @@ public class InfoActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        TextView bugReportText = (TextView) findViewById(R.id.bug_report_text);
+        bugReportText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, "connerjm@uw.edu");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Destiny Guns Bug Report");
+                try
+                {
+                    startActivity(Intent.createChooser(intent, "Submit Bug Report"));
+                }
+                catch(android.content.ActivityNotFoundException e)
+                {
+                    Toast.makeText(v.getContext(),
+                            "No mail clients installed.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

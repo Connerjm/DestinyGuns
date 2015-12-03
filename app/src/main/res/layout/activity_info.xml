@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:clickable="true"
+                android:id="@+id/bug_report_text"
                 android:text="@string/bug_report_paragraph"/>
 
         </LinearLayout>

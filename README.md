@@ -4,8 +4,6 @@ legendary weapons. This is a projct started for a few courses at the University 
 Tacoma with Robert Gillis.
 
 # Functionality Yet to be Implemented.
-Clicking on the bug report with need to either that the user to their mail app, or we will create 
-an email and send it ourselves in the code.
 
 Social media login (either Facebook or Google). Maybe
 
