@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,9 @@ public class WeaponDetailFragment extends Fragment
     private static final String removeurl =
             "http://cssgate.insttech.washington.edu/~connerjm/removeEntryFromList.php";
 
+    private static final String rankurl =
+            "http://cssgate.insttech.washington.edu/~connerjm/updateRank.php";
+
     /** Holds a reference to all of our xml bits and bobs. */
     private TextView mName;
     private TextView mFlavour;
@@ -73,6 +77,8 @@ public class WeaponDetailFragment extends Fragment
 
     private String name;
     private String useremail;
+
+    private int mRank;
 
     private ImageButton mFavourite;
     private ImageButton mOwned;
@@ -108,6 +114,7 @@ public class WeaponDetailFragment extends Fragment
 
         //Gets reference to all of the xml things.
         mName = (TextView) v.findViewById(R.id.detail_weapon_name);
+
         mFlavour = (TextView) v.findViewById(R.id.detail_flavour_text);
         mExclusive = (TextView) v.findViewById(R.id.detail_exlusive_text);
         mDamage = (TextView) v.findViewById(R.id.detail_damage_text);
@@ -123,6 +130,87 @@ public class WeaponDetailFragment extends Fragment
         mStatSeven = (TextView) v.findViewById(R.id.detail_stat_seven_text);
         mDetails = (TextView) v.findViewById(R.id.detail_details_text);
 
+        createButtonBar(v);
+        createrankBar(v);
+
+        return v;
+    }
+
+    /**
+     * Handles the call to the server to get the info for the weapon from the database and put
+     * all that info in the correct xml places.
+     */
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        Bundle args = getArguments();
+        String name = args.getString("name"), myurl = url;
+        //Encodes the name for the url because spaces and apostrophes cause issues.
+        final String TAG = "Testing name encoding.";
+        Log.d(TAG, name);
+        name = cleanName(name);
+        Log.d(TAG, name);
+        myurl += "?name=" + name;
+        Log.d(TAG, myurl);
+
+        if(networkInfo != null && networkInfo.isConnected())
+        {
+            new DetailWebTask().execute(myurl);
+        }
+        else
+        {
+            Toast.makeText(getActivity(), "No network connection available.",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        Database db = new Database(getContext());
+        favClicked = db.isGunInList(name, "favourite");
+        ownedClicked = db.isGunInList(name, "owned");
+        wishClicked = db.isGunInList(name, "wishlist");
+        db.closeDB();
+
+        if(favClicked)
+        {
+            mFavourite.setImageResource(R.drawable.ic_favourite_filled);
+        }
+        else
+        {
+            mFavourite.setImageResource(R.drawable.ic_favourite_border);
+        }
+        if(ownedClicked)
+        {
+            mOwned.setImageResource(R.drawable.ic_check_double);
+        }
+        else
+        {
+            mOwned.setImageResource(R.drawable.ic_check_single);
+        }
+        if(wishClicked)
+        {
+            mWishlist.setImageResource(R.drawable.ic_wishlist_filled);
+        }
+        else
+        {
+            mWishlist.setImageResource(R.drawable.ic_wishlist_border);
+        }
+    }
+
+//HELPER METHODS
+
+    private String cleanName(String beforeName)
+    {
+        String returning = beforeName.replaceAll(" ", "%20");
+        returning = returning.replaceAll("\'", "\\\\%27");
+        return returning;
+    }
+
+    private void createButtonBar(View v)
+    {
         mFavourite = (ImageButton) v.findViewById(R.id.detail_favourite_button);
         mFavourite.setOnClickListener(new View.OnClickListener()
         {
@@ -203,81 +291,109 @@ public class WeaponDetailFragment extends Fragment
                 db.closeDB();
             }
         });
-
-        return v;
     }
 
-    /**
-     * Handles the call to the server to get the info for the weapon from the database and put
-     * all that info in the correct xml places.
-     */
-    @Override
-    public void onStart()
+    private void createrankBar(View v)
     {
-        super.onStart();
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        Button mOne = (Button) v.findViewById(R.id.one_button);
+        mOne.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 1);
+            }
+        });
 
-        Bundle args = getArguments();
-        String name = args.getString("name"), myurl = url;
-        //Encodes the name for the url because spaces and apostrophes cause issues.
-        final String TAG = "Testing name encoding.";
-        Log.d(TAG, name);
-        name = cleanName(name);
-        Log.d(TAG, name);
-        myurl += "?name=" + name;
-        Log.d(TAG, myurl);
+        Button mTwo = (Button) v.findViewById(R.id.two_button);
+        mTwo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 2);
+            }
+        });
 
-        if(networkInfo != null && networkInfo.isConnected())
+        Button mThree = (Button) v.findViewById(R.id.three_button);
+        mThree.setOnClickListener(new View.OnClickListener()
         {
-            new DetailWebTask().execute(myurl);
-        }
-        else
-        {
-            Toast.makeText(getActivity(), "No network connection available.",
-                    Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 3);
+            }
+        });
 
-        Database db = new Database(getContext());
-        favClicked = db.isGunInList(name, "favourite");
-        ownedClicked = db.isGunInList(name, "owned");
-        wishClicked = db.isGunInList(name, "wishlist");
-        db.closeDB();
+        Button mFour = (Button) v.findViewById(R.id.four_button);
+        mFour.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 4);
+            }
+        });
 
-        if(favClicked)
+        Button mFive = (Button) v.findViewById(R.id.five_button);
+        mFive.setOnClickListener(new View.OnClickListener()
         {
-            mFavourite.setImageResource(R.drawable.ic_favourite_filled);
-        }
-        else
-        {
-            mFavourite.setImageResource(R.drawable.ic_favourite_border);
-        }
-        if(ownedClicked)
-        {
-            mOwned.setImageResource(R.drawable.ic_check_double);
-        }
-        else
-        {
-            mOwned.setImageResource(R.drawable.ic_check_single);
-        }
-        if(wishClicked)
-        {
-            mWishlist.setImageResource(R.drawable.ic_wishlist_filled);
-        }
-        else
-        {
-            mWishlist.setImageResource(R.drawable.ic_wishlist_border);
-        }
-    }
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 5);
+            }
+        });
 
-//HELPER METHODS
+        Button mSix = (Button) v.findViewById(R.id.six_button);
+        mSix.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 6);
+            }
+        });
 
-    private String cleanName(String beforeName)
-    {
-        String returning = beforeName.replaceAll(" ", "%20");
-        returning = returning.replaceAll("\'", "\\\\%27");
-        return returning;
+        Button mSeven = (Button) v.findViewById(R.id.seven_button);
+        mSeven.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 7);
+            }
+        });
+
+        Button mEight = (Button) v.findViewById(R.id.eight_button);
+        mEight.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 8);
+            }
+        });
+
+        Button mNine = (Button) v.findViewById(R.id.nine_button);
+        mNine.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 9);
+            }
+        });
+
+        Button mTen = (Button) v.findViewById(R.id.ten_button);
+        mTen.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new UpdateRankWebTask().execute(rankurl + "?name=" + cleanName(name) + "&userrank=" + 10);
+            }
+        });
     }
 
 //INNER CLASS
@@ -336,7 +452,7 @@ public class WeaponDetailFragment extends Fragment
                 mType.setText((String) jsonObject.get("guntype"));
                 mDamage.setText((String) jsonObject.get("damagetype"));
                 mFlavour.setText((String) jsonObject.get("flavour"));
-                int mRank = Integer.parseInt((String) jsonObject.get("rank"));
+                mRank = Integer.parseInt((String) jsonObject.get("rank"));
                 mName.setText(name + " (" + mRank + ")");
                 if(mRarity.equalsIgnoreCase("Legendary"))
                 {
@@ -537,6 +653,86 @@ public class WeaponDetailFragment extends Fragment
                 JSONObject jsonObject = new JSONObject(s);
                 String result = jsonObject.getString("result");
                 Log.d(TAG, "result = " + result);
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * A class that gets the json information from the database from a server call.
+     */
+    private class UpdateRankWebTask extends AsyncTask<String, Void, String>
+    {
+
+        //VARIABLES
+
+        /** Holds the string tag for this web task. */
+        private static final String TAG = "UpdateRankWebTask";
+
+        //OVERWRITTEN METHODS
+
+        /**
+         * Call to the server.
+         *
+         * @param urls is the url of the server.
+         * @return the yielded string.
+         */
+        @Override
+        protected String doInBackground(String...urls)
+        {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for(String url : urls)
+            {
+                try
+                {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new
+                            InputStreamReader(content));
+                    String s;
+                    while((s = buffer.readLine()) != null)
+                    {
+                        response += s;
+                    }
+                }
+                catch(Exception e)
+                {
+                    response = "Unable to download because " + e.getMessage();
+                }
+                finally
+                {
+                    if(urlConnection != null)
+                    {
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+            return response;
+        }
+
+        /**
+         * Handles all of the json information that is returned from the server call.
+         *
+         * @param s is the string json returned.
+         */
+        @Override
+        protected void onPostExecute(String s)
+        {
+            super.onPostExecute(s);
+
+            try
+            {
+                JSONObject jsonObject = new JSONObject(s);
+                mRank = jsonObject.getInt("newrank");
+                Log.d(TAG, "result = " + mRank);
+                mName.setText(name + " (" + mRank + ")");
             }
             catch(Exception e)
             {

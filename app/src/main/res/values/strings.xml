@@ -31,7 +31,8 @@
     <string name="stats">\t\tStats-</string>
     <string name="details">\t\tDetails-</string>
     <string name="cancel">Cancel</string>
-    <string name="rate">Rate</string>
+    <string name="rate">Rate</string>\
+    <string name="voterank">Vote on Rank</string>
 
     <!-- PHAT strings. -->
     <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin
