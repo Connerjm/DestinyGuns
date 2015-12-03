@@ -65,12 +65,14 @@ public class WeaponListFragment extends Fragment
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListRarityAndSlot.php";
     private static final String refineAllURL =
             "http://cssgate.insttech.washington.edu/~connerjm/refineWeaponListAll.php";
-    private static final String favouriteListURL =
-            "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
-    private static final String ownedListURL =
-            "http://cssgate.insttech.washington.edu/~connerjm/viewOwned.php";
-    private static final String wishlistURL =
-            "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
+//    private static final String favouriteListURL =
+//            "http://cssgate.insttech.washington.edu/~connerjm/viewUserFavourites.php";
+//    private static final String ownedListURL =
+//            "http://cssgate.insttech.washington.edu/~connerjm/viewOwned.php";
+//    private static final String wishlistURL =
+//            "http://cssgate.insttech.washington.edu/~connerjm/viewWishlist.php";
+    private static final String refineListURL =
+            "http://cssgate.insttech.washington.edu/~connerjm/viewList.php";
 
     /** Holds a list of the weapon info we need for holding these weapons. */
     private List<WeaponInfo> mList = new ArrayList<>();
@@ -129,21 +131,11 @@ public class WeaponListFragment extends Fragment
         if(wasList)//From a list.
         {
             thelist = args.getString("thelist");
-            switch(thelist)
-            {
-                case "Favourites":
-                    myurl = favouriteListURL;
-                    break;
-                case "Owned":
-                    myurl = ownedListURL;
-                    break;
-                case "Wishlist":
-                    myurl = wishlistURL;
-                    break;
-            }
+            myurl = refineListURL;
             SharedPreferences sharedPreferences =
                     getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
             myurl += "?email=" + sharedPreferences.getString(getString(R.string.USERNAME), null);
+            myurl += "&list=" + thelist.toLowerCase();
 
             textView.setText("Your " + thelist + " Weapons");
         }
