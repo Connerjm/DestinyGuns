@@ -9,8 +9,6 @@ Social media login (either Facebook or Google). Maybe
 
 Incorporate pictures in the list and/or detailed weapon pages.
 
-Implement changing the average rank of a gun based off of user voting.
-
 More tests.
 
 # Known Bugs.
@@ -18,3 +16,5 @@ More tests.
 If the user attempts to access one of their lists but the list is empty, it shows nothing.
 
 If the user deletes the app data, their information will not match with the info on server.
+
+User can smash any of the rank buttons for a chosen gun and make that gun whatever rank they want.
