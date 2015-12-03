@@ -18,3 +18,5 @@ More tests.
 # Known Bugs.
 
 If the user attempts to access one of their lists but the list is empty, it shows nothing.
+
+If the user deletes the app data, their information will not match with the info on server.
