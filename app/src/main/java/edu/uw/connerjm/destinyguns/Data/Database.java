@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Conner on 02/12/2015.
@@ -14,6 +15,7 @@ public class Database
 
     public static final int DB_VERSION = 1;
     public static final String DB_NAME = "Destiny.db";
+    private static final String TAG = "Database";
 
     private DBHelper mDBHelper;
     private SQLiteDatabase mSQLiteDatabase;
@@ -31,30 +33,39 @@ public class Database
         contentValues.put("list", whichlist);
 
         long rowId = mSQLiteDatabase.insert("bookmarks", null, contentValues);
+        Log.d(TAG, "insert " + gunname + " into " + whichlist);
         return rowId != -1;
     }
 
     public boolean isGunInList(String gunname, String whichlist)
     {
+        boolean returning = false;
         String[] columns = {"gunname", "list"};
         Cursor c = mSQLiteDatabase.query("bookmarks", columns, null, null, null, null, null, null);
         c.moveToFirst();
         for(int i = 0; i < c.getCount(); i++)
         {
             String name = c.getString(0);
+            name = name.replaceAll("\'", "\\\\%27");
+            name = name.replaceAll(" ", "%20");
+            Log.d(TAG, "From database = " + name + ". And from the method call = " + gunname);
             String list = c.getString(1);
+            Log.d(TAG, list);
             if(gunname.equals(name) && whichlist.equals(list))
             {
-                return true;
+                returning = true;
             }
+            c.moveToNext();
         }
-        return false;
+        c.close();
+        Log.d(TAG, "is in " + whichlist + " = " + returning);
+        return returning;
     }
 
     public void deleteBookmark(String gunname, String whichlist)
     {
-        mSQLiteDatabase.delete("bookmarks",
-                gunname + "='gunname' AND " + whichlist + "='list'", null);
+        mSQLiteDatabase.delete("bookmarks", "gunname=? AND list=?", new String[]{gunname, whichlist});
+        Log.d(TAG, "delete " + gunname + " from " + whichlist);
     }
 
     public void closeDB()

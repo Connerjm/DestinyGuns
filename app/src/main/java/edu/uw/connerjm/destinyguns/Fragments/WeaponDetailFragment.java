@@ -63,6 +63,8 @@ public class WeaponDetailFragment extends Fragment
     private TextView mStatSeven;
     private TextView mDetails;
 
+    private String name;
+
     private ImageButton mFavourite;
     private ImageButton mOwned;
     private ImageButton mWishlist;
@@ -114,14 +116,22 @@ public class WeaponDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                Database db = new Database(getContext());
                 if(favClicked)
                 {
                     //Remove from list
+                    db.deleteBookmark(name, "favourite");
+                    mFavourite.setImageResource(R.drawable.ic_favourite_border);
+                    favClicked = false;
                 }
                 else
                 {
                     //add to list
+                    db.insertBookmark(name, "favourite");
+                    mFavourite.setImageResource(R.drawable.ic_favourite_filled);
+                    favClicked = true;
                 }
+                db.closeDB();
             }
         });
 
@@ -131,14 +141,22 @@ public class WeaponDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                Database db = new Database(getContext());
                 if(ownedClicked)
                 {
                     //Remove from list
+                    db.deleteBookmark(name, "owned");
+                    mOwned.setImageResource(R.drawable.ic_check_single);
+                    ownedClicked = false;
                 }
                 else
                 {
                     //add to list
+                    db.insertBookmark(name, "owned");
+                    mOwned.setImageResource(R.drawable.ic_check_double);
+                    ownedClicked = true;
                 }
+                db.closeDB();
             }
         });
 
@@ -148,14 +166,22 @@ public class WeaponDetailFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                Database db = new Database(getContext());
                 if(wishClicked)
                 {
                     //Remove from list
+                    db.deleteBookmark(name, "wishlist");
+                    mWishlist.setImageResource(R.drawable.ic_wishlist_border);
+                    wishClicked = false;
                 }
                 else
                 {
                     //add to list
+                    db.insertBookmark(name, "wishlist");
+                    mWishlist.setImageResource(R.drawable.ic_wishlist_filled);
+                    wishClicked = true;
                 }
+                db.closeDB();
             }
         });
 
@@ -279,7 +305,7 @@ public class WeaponDetailFragment extends Fragment
             {
                 JSONArray jsonArray = new JSONArray(s);
                 JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-                String name = (String) jsonObject.get("name");
+                name = (String) jsonObject.get("name");
                 String mRarity = (String) jsonObject.get("rarity");
                 mType.setText((String) jsonObject.get("guntype"));
                 mDamage.setText((String) jsonObject.get("damagetype"));

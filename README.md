@@ -11,8 +11,6 @@ Social media login (either Facebook or Google). Maybe
 
 Buttons on the weapon details page need to create or delete the correct entry in the corresponding
  table in the database. SQLite
- 
-Those buttons also need to be switched to icons.
 
 Incorporate pictures in the list and/or detailed weapon pages.
 
