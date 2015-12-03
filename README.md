@@ -9,9 +9,6 @@ an email and send it ourselves in the code.
 
 Social media login (either Facebook or Google). Maybe
 
-Buttons on the weapon details page need to create or delete the correct entry in the corresponding
- table in the database. SQLite
-
 Incorporate pictures in the list and/or detailed weapon pages.
 
 Implement changing the average rank of a gun based off of user voting.

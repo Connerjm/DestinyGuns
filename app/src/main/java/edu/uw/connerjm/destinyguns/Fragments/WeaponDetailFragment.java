@@ -1,6 +1,7 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,6 +48,12 @@ public class WeaponDetailFragment extends Fragment
     private static final String url =
             "http://cssgate.insttech.washington.edu/~connerjm/getWeaponInfo.php";
 
+    /** The two urls that we use to add or remove weapons to the three lists. */
+    private static final String addurl =
+            "http://cssgate.insttech.washington.edu/~connerjm/addEntryToList.php";
+    private static final String removeurl =
+            "http://cssgate.insttech.washington.edu/~connerjm/removeEntryFromList.php";
+
     /** Holds a reference to all of our xml bits and bobs. */
     private TextView mName;
     private TextView mFlavour;
@@ -64,6 +72,7 @@ public class WeaponDetailFragment extends Fragment
     private TextView mDetails;
 
     private String name;
+    private String useremail;
 
     private ImageButton mFavourite;
     private ImageButton mOwned;
@@ -93,6 +102,10 @@ public class WeaponDetailFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.fragment_weapon_detail, container, false);
 
+        SharedPreferences sharedPreferences =
+                getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
+        useremail = sharedPreferences.getString(getString(R.string.USERNAME), null);
+
         //Gets reference to all of the xml things.
         mName = (TextView) v.findViewById(R.id.detail_weapon_name);
         mFlavour = (TextView) v.findViewById(R.id.detail_flavour_text);
@@ -121,6 +134,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //Remove from list
                     db.deleteBookmark(name, "favourite");
+                    new AddOrRemoveWebTask().execute(removeurl + "?list=favourites&email=" + useremail + "&name=" + cleanName(name));
                     mFavourite.setImageResource(R.drawable.ic_favourite_border);
                     favClicked = false;
                 }
@@ -128,6 +142,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //add to list
                     db.insertBookmark(name, "favourite");
+                    new AddOrRemoveWebTask().execute(addurl + "?list=favourites&email=" + useremail + "&name=" + cleanName(name));
                     mFavourite.setImageResource(R.drawable.ic_favourite_filled);
                     favClicked = true;
                 }
@@ -146,6 +161,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //Remove from list
                     db.deleteBookmark(name, "owned");
+                    new AddOrRemoveWebTask().execute(removeurl + "?list=owned&email=" + useremail + "&name=" + cleanName(name));
                     mOwned.setImageResource(R.drawable.ic_check_single);
                     ownedClicked = false;
                 }
@@ -153,6 +169,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //add to list
                     db.insertBookmark(name, "owned");
+                    new AddOrRemoveWebTask().execute(addurl + "?list=owned&email=" + useremail + "&name=" + cleanName(name));
                     mOwned.setImageResource(R.drawable.ic_check_double);
                     ownedClicked = true;
                 }
@@ -171,6 +188,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //Remove from list
                     db.deleteBookmark(name, "wishlist");
+                    new AddOrRemoveWebTask().execute(removeurl + "?list=wishlist&email=" + useremail + "&name=" + cleanName(name));
                     mWishlist.setImageResource(R.drawable.ic_wishlist_border);
                     wishClicked = false;
                 }
@@ -178,6 +196,7 @@ public class WeaponDetailFragment extends Fragment
                 {
                     //add to list
                     db.insertBookmark(name, "wishlist");
+                    new AddOrRemoveWebTask().execute(addurl + "?list=wishlist&email=" + useremail + "&name=" + cleanName(name));
                     mWishlist.setImageResource(R.drawable.ic_wishlist_filled);
                     wishClicked = true;
                 }
@@ -205,9 +224,7 @@ public class WeaponDetailFragment extends Fragment
         //Encodes the name for the url because spaces and apostrophes cause issues.
         final String TAG = "Testing name encoding.";
         Log.d(TAG, name);
-        name = name.replaceAll("\'", "\\\\%27");
-        Log.d(TAG, name);
-        name = name.replaceAll(" ", "%20");
+        name = cleanName(name);
         Log.d(TAG, name);
         myurl += "?name=" + name;
         Log.d(TAG, myurl);
@@ -252,6 +269,15 @@ public class WeaponDetailFragment extends Fragment
         {
             mWishlist.setImageResource(R.drawable.ic_wishlist_border);
         }
+    }
+
+//HELPER METHODS
+
+    private String cleanName(String beforeName)
+    {
+        String returning = beforeName.replaceAll(" ", "%20");
+        returning = returning.replaceAll("\'", "\\\\%27");
+        return returning;
     }
 
 //INNER CLASS
@@ -437,6 +463,85 @@ public class WeaponDetailFragment extends Fragment
             char[] buffer = new char[len];
             reader.read(buffer);
             return new String(buffer);
+        }
+    }
+
+    /**
+     * A class that gets the json information from the database from a server call.
+     */
+    private class AddOrRemoveWebTask extends AsyncTask<String, Void, String>
+    {
+
+        //VARIABLES
+
+        /** Holds the string tag for this web task. */
+        private static final String TAG = "AddOrRemoveWebTask";
+
+        //OVERWRITTEN METHODS
+
+        /**
+         * Call to the server.
+         *
+         * @param urls is the url of the server.
+         * @return the yielded string.
+         */
+        @Override
+        protected String doInBackground(String...urls)
+        {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for(String url : urls)
+            {
+                try
+                {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new
+                            InputStreamReader(content));
+                    String s;
+                    while((s = buffer.readLine()) != null)
+                    {
+                        response += s;
+                    }
+                }
+                catch(Exception e)
+                {
+                    response = "Unable to download because " + e.getMessage();
+                }
+                finally
+                {
+                    if(urlConnection != null)
+                    {
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+            return response;
+        }
+
+        /**
+         * Handles all of the json information that is returned from the server call.
+         *
+         * @param s is the string json returned.
+         */
+        @Override
+        protected void onPostExecute(String s)
+        {
+            super.onPostExecute(s);
+
+            try
+            {
+                JSONObject jsonObject = new JSONObject(s);
+                String result = jsonObject.getString("result");
+                Log.d(TAG, "result = " + result);
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
+            }
         }
     }
 }

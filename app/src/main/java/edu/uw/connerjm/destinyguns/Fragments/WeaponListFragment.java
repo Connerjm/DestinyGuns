@@ -123,7 +123,7 @@ public class WeaponListFragment extends Fragment
         //Gets the parameters to refine the list.
         Bundle args = this.getArguments();
         boolean wasList = args.getBoolean("waslist?");
-        String myurl = "", thelist;
+        String myurl, thelist;
         String rarity = args.getString("rarity");
         String slot = args.getString("slot");
         String type = args.getString("type");
@@ -233,7 +233,7 @@ public class WeaponListFragment extends Fragment
          * Call to the server.
          *
          * @param urls is the url of the server.
-         * @return the yielded stream.
+         * @return the yielded string.
          */
         @Override
         protected String doInBackground(String...urls)
