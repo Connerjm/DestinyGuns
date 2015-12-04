@@ -1,6 +1,7 @@
 package edu.uw.connerjm.destinyguns.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +18,10 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
+import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -57,7 +59,7 @@ public class LoginFragment extends Fragment
     public interface MyRegisterListener
     {
         void myStartRegister();
-        void myStartRegisterFacebook(String name, String email);
+        void myStartRegisterFacebook(String firstName, String lastName, String email);
         void myStartMain();
     }
 
@@ -70,6 +72,8 @@ public class LoginFragment extends Fragment
     private EditText mEmail;
     private EditText mPassword;
     private LoginButton mFaceLogin;
+
+    private CallbackManager mCallbackManager;
 
 //CONSTRUCTOR
 
@@ -91,8 +95,9 @@ public class LoginFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        FacebookSdk.sdkInitialize(getContext());
+        mCallbackManager = CallbackManager.Factory.create();
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        CallbackManager callbackManager = CallbackManager.Factory.create();
 
         mEmail = (EditText) v.findViewById(R.id.email_login);
         mPassword = (EditText) v.findViewById(R.id.password_login);
@@ -120,8 +125,7 @@ public class LoginFragment extends Fragment
         });
 
         Button mRegister = (Button) v.findViewById(R.id.register_login_button);
-        mRegister.setOnClickListener(new View.OnClickListener()
-        {
+        mRegister.setOnClickListener(new View.OnClickListener() {
             /**
              * When the register button is clicked, the login activity will switch to the register
              * fragment from this one.
@@ -129,45 +133,65 @@ public class LoginFragment extends Fragment
              * @param v the parent view.
              */
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 ((MyRegisterListener) getActivity()).myStartRegister();
             }
         });
-
+        FacebookSdk.addLoggingBehavior(LoggingBehavior.REQUESTS);
         mFaceLogin = (LoginButton) v.findViewById(R.id.login_button);
         mFaceLogin.setReadPermissions(Arrays.asList("email", "public_profile"));
         mFaceLogin.setFragment(this);
-        mFaceLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        mFaceLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                final AccessToken accessToken = loginResult.getAccessToken();
-                GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+            public void onClick(View v) {
+                mFaceLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    /**
+                     * Grants access to the User's Facebook
+                     * information if login result is successful
+                     */
                     @Override
-                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
-                            ((MyRegisterListener) getActivity()).myStartRegisterFacebook(user.optString("first_name"), user.optString("email"));
+                    public void onSuccess(LoginResult loginResult) {
+                        AccessToken accessToken = loginResult.getAccessToken();
+                        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                            /**
+                             * Retrieves the User's Facebook information
+                             * in a JSONObject and sends it to the LoginActivity.
+                             * @param object User's Facebook information
+                             * @param response Not used
+                             */
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                ((MyRegisterListener) getActivity()).
+                                        myStartRegisterFacebook(object.optString("first_name"), object.optString("last_name"), object.optString("email"));
+                            }
+                        });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "first_name, last_name, email");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
                     }
                 });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "first_name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             }
         });
+
         return v;
     }
 
-//INNER CLASSES
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //INNER CLASSES
 
     /**
      * Tries to authenticate the User's email and password that is stored in an online database.

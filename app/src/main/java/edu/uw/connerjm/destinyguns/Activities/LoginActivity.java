@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 
 import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
 import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
@@ -35,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         getSupportFragmentManager().beginTransaction().add(R.id.lr_container, new LoginFragment())
                 .addToBackStack(null).commit();
     }
@@ -51,12 +48,22 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
+    /**
+     * Displays the register fragment based on if the user has clicked the Facebook
+     * register button.Sends the User's Facebook information to the Register Fragment
+     * to fill the related fields for and easier registration process.
+     *
+     * @param firstName User's FB first name
+     * @param lastName User's FB last name
+     * @param email User's FB email
+     */
     @Override
-    public void myStartRegisterFacebook(String name, String email) {
+    public void myStartRegisterFacebook(String firstName, String lastName, String email) {
         RegisterFragment registerFragment = new RegisterFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.lr_container,
-                new RegisterFragment()).addToBackStack(null).commit();
-        registerFragment.updateInformation(name, email);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.lr_container, registerFragment)
+                .addToBackStack(null).commit();
+        registerFragment.updateInformation(firstName, lastName, email);
     }
 
     //INTERFACE METHODS
