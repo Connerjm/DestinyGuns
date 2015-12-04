@@ -169,7 +169,6 @@ public class WeaponDetailFragment extends Fragment
         if(networkInfo != null && networkInfo.isConnected())
         {
             new DetailWebTask().execute(myurl);
-            new LoadImageWebTask().execute("http://cssgate.insttech.washington.edu/~connerjm/DestinyGunsImages/Icons/abyssdefianticon.png");
         }
         else
         {
@@ -457,6 +456,13 @@ public class WeaponDetailFragment extends Fragment
                 JSONArray jsonArray = new JSONArray(s);
                 JSONObject jsonObject = (JSONObject) jsonArray.get(0);
                 name = (String) jsonObject.get("name");
+
+                String iconname = name.replace(" ", "").replace("\'", "").replace("(", "")
+                        .replace(")", "").replace("-", "").toLowerCase();
+                new LoadImageWebTask().execute(
+                        "http://cssgate.insttech.washington.edu/~connerjm/DestinyGunsImages/Icons/"
+                                + iconname + "icon.png");
+
                 String mRarity = (String) jsonObject.get("rarity");
                 mType.setText((String) jsonObject.get("guntype"));
                 mDamage.setText((String) jsonObject.get("damagetype"));
