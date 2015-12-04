@@ -129,9 +129,10 @@ public class WeaponListFragment extends Fragment
             SharedPreferences sharedPreferences =
                     getActivity().getSharedPreferences(getString(R.string.SHARED_PREFS), 0);
             myurl += "?email=" + sharedPreferences.getString(getString(R.string.USERNAME), null);
-            myurl += "&list=" + thelist.toLowerCase();
+            if(thelist != null)
+                myurl += "&list=" + thelist.toLowerCase();
 
-            textView.setText("Your " + thelist + " Weapons");
+            textView.setText(getString(R.string.your_blank_weapons, thelist));
         }
         else if(!(rarity == null) && (slot == null) && (type == null))//just rarity
         {
