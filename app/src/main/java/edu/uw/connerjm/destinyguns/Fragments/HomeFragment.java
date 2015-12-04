@@ -145,11 +145,10 @@ public class HomeFragment extends Fragment
             {
                 if (position == 0)
                 {
-                    //TODO enable other spinners items.
                     mRarity = null;
-                } else
+                }
+                else
                 {
-                    //TODO disable other spinners items.
                     mRarity = (String) parent.getItemAtPosition(position);
                 }
             }
@@ -181,11 +180,10 @@ public class HomeFragment extends Fragment
             {
                 if (position == 0)
                 {
-                    //TODO enable other spinners items.
                     mSlot = null;
-                } else
+                }
+                else
                 {
-                    //TODO disable other spinners items.
                     mSlot = (String) parent.getItemAtPosition(position);
                 }
             }
@@ -217,11 +215,10 @@ public class HomeFragment extends Fragment
             {
                 if (position == 0)
                 {
-                    //TODO enable other spinners items.
                     mType = null;
-                } else
+                }
+                else
                 {
-                    //TODO disable other spinners items.
                     mType = (String) parent.getItemAtPosition(position);
                 }
             }

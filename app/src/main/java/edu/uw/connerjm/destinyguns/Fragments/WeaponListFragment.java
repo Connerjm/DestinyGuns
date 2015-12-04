@@ -280,15 +280,22 @@ public class WeaponListFragment extends Fragment
             {
                 mList.clear();
 
-                JSONArray jsonArray = new JSONArray(s);
-                for(int x = 0; x < jsonArray.length(); x++)
+                if(s.length() == 0)
                 {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(x);
-                    String name = (String) jsonObject.get("name");
-                    String damageType = (String) jsonObject.get("damagetype");
-                    mList.add(new WeaponInfo(name, damageType));
+                    Toast.makeText(getActivity(), "Your List is Empty!", Toast.LENGTH_LONG).show();
                 }
-                mListView.setAdapter(mAdapter);
+                else
+                {
+                    JSONArray jsonArray = new JSONArray(s);
+                    for(int x = 0; x < jsonArray.length(); x++)
+                    {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(x);
+                        String name = (String) jsonObject.get("name");
+                        String damageType = (String) jsonObject.get("damagetype");
+                        mList.add(new WeaponInfo(name, damageType));
+                    }
+                    mListView.setAdapter(mAdapter);
+                }
             }
             catch(Exception e)
             {
