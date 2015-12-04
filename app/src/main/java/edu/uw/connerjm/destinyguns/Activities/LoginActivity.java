@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-
 import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
 import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
 import edu.uw.connerjm.destinyguns.R;

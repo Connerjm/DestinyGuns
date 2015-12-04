@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -150,7 +149,7 @@ public class RegisterFragment extends Fragment
      * Updates the First Name, Last Name, and Email fields
      * of the Registration fragment with the Facebook information
      * if the User chose to sign up through Facebook.
-     * @param savedInstanceState
+     * @param savedInstanceState is the saved state from previously.
      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
