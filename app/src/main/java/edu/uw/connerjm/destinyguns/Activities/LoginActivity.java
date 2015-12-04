@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+
 import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
 import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
 import edu.uw.connerjm.destinyguns.R;
@@ -47,7 +48,25 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
-//INTERFACE METHODS
+    /**
+     * Displays the register fragment based on if the user has clicked the Facebook
+     * register button.Sends the User's Facebook information to the Register Fragment
+     * to fill the related fields for and easier registration process.
+     *
+     * @param firstName User's FB first name
+     * @param lastName User's FB last name
+     * @param email User's FB email
+     */
+    @Override
+    public void myStartRegisterFacebook(String firstName, String lastName, String email) {
+        RegisterFragment registerFragment = new RegisterFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.lr_container, registerFragment)
+                .addToBackStack(null).commit();
+        registerFragment.updateInformation(firstName, lastName, email);
+    }
+
+    //INTERFACE METHODS
 
     /**
      * Changes the displayed activity from the login activity to the main activity.

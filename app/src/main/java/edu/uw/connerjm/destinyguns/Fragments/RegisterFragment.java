@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -42,6 +43,11 @@ public class RegisterFragment extends Fragment
 
     /** the server url to add a user to the database. */
     private String url = "http://cssgate.insttech.washington.edu/~connerjm/addUser.php";
+
+    /** Holds the User's Facebook information. Optional */
+    private String mFBFirstName;
+    private String mFBLastName;
+    private String mFBEmail;
 
     /** the layout parts that we need access to. */
     private Button mRegister;
@@ -85,24 +91,20 @@ public class RegisterFragment extends Fragment
                 R.array.console_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mConsoleSpinner.setAdapter(adapter);
-        mConsoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        mConsoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mConsole = (String) parent.getItemAtPosition(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
                 mConsole = null;
             }
         });
 
         mRegister = (Button) v.findViewById(R.id.confirm_register);
-        mRegister.setOnClickListener(new View.OnClickListener()
-        {
+        mRegister.setOnClickListener(new View.OnClickListener() {
             /**
              * When the register button is clicked, if the fields are filled out accordingly, we
              * attempt to add the new user to the database using the given email and password.
@@ -110,31 +112,22 @@ public class RegisterFragment extends Fragment
              * @param v is the parent view.
              */
             @Override
-            public void onClick(View v)
-            {
-                if(mFname.getText().toString().length() < 1)
-                {
+            public void onClick(View v) {
+                if (mFname.getText().toString().length() < 1) {
                     Toast.makeText(getActivity(), "First name is required",
                             Toast.LENGTH_LONG).show();
-                }
-                else if(mLname.getText().toString().length() < 1)
-                {
+                } else if (mLname.getText().toString().length() < 1) {
                     Toast.makeText(getActivity(), "Last name is required",
                             Toast.LENGTH_LONG).show();
-                }
-                else if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0)
-                {
+                } else if (mEmail.getText().length() != 0 && mPassword.getText().length() != 0) {
                     String myUrl = url + "?email=" + mEmail.getText().toString() +
                             "&password=" + mPassword.getText().toString() +
                             "&fname=" + mFname.getText().toString() +
                             "&minit=" + mMinit.getText().toString() +
                             "&lname=" + mLname.getText().toString();
-                    try
-                    {
+                    try {
                         myUrl += "&console=" + URLEncoder.encode(mConsole, "UTF-8");
-                    }
-                    catch(UnsupportedEncodingException e)
-                    {
+                    } catch (UnsupportedEncodingException e) {
                         Log.d("Encoding string error.", e.getMessage());
                     }
                     new AddUserWebTask().execute(myUrl);
@@ -144,7 +137,30 @@ public class RegisterFragment extends Fragment
         return v;
     }
 
-//INNER CLASSES
+    /**
+     * Saves the User's Facebook information
+     */
+    public void updateInformation(String firstName, String lastName, String email) {
+        mFBFirstName = firstName;
+        mFBLastName = lastName;
+        mFBEmail = email;
+    }
+
+    /**
+     * Updates the First Name, Last Name, and Email fields
+     * of the Registration fragment with the Facebook information
+     * if the User chose to sign up through Facebook.
+     * @param savedInstanceState
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mFname.setText(mFBFirstName);
+        mLname.setText(mFBLastName);
+        mEmail.setText(mFBEmail);
+    }
+
+    //INNER CLASSES
 
     /**
      * Sends the User's email and password to be stored in an online database.
