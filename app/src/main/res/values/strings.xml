@@ -9,6 +9,7 @@
     <string name="USERNAME">username</string>
 
     <!-- Normal single-use strings. -->
+    <string name="facebook_app_id">144525742575862</string>
     <string name="refine">Choose a custom list to view or\n use the drop boxes to refine your search.</string>
     <string name="logout">Logout</string>
     <string name="register_new_user">Register New User</string>

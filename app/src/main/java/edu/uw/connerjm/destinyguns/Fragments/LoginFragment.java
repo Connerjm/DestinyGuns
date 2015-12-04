@@ -13,6 +13,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -21,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 import edu.uw.connerjm.destinyguns.R;
 
@@ -45,6 +57,7 @@ public class LoginFragment extends Fragment
     public interface MyRegisterListener
     {
         void myStartRegister();
+        void myStartRegisterFacebook(String name, String email);
         void myStartMain();
     }
 
@@ -56,6 +69,7 @@ public class LoginFragment extends Fragment
     /** the layout components we interact with. */
     private EditText mEmail;
     private EditText mPassword;
+    private LoginButton mFaceLogin;
 
 //CONSTRUCTOR
 
@@ -78,6 +92,7 @@ public class LoginFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
+        CallbackManager callbackManager = CallbackManager.Factory.create();
 
         mEmail = (EditText) v.findViewById(R.id.email_login);
         mPassword = (EditText) v.findViewById(R.id.password_login);
@@ -117,6 +132,36 @@ public class LoginFragment extends Fragment
             public void onClick(View v)
             {
                 ((MyRegisterListener) getActivity()).myStartRegister();
+            }
+        });
+
+        mFaceLogin = (LoginButton) v.findViewById(R.id.login_button);
+        mFaceLogin.setReadPermissions(Arrays.asList("email", "public_profile"));
+        mFaceLogin.setFragment(this);
+        mFaceLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                final AccessToken accessToken = loginResult.getAccessToken();
+                GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+                            ((MyRegisterListener) getActivity()).myStartRegisterFacebook(user.optString("first_name"), user.optString("email"));
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "first_name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             }
         });
         return v;

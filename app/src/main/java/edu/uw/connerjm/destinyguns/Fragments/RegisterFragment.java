@@ -85,17 +85,14 @@ public class RegisterFragment extends Fragment
                 R.array.console_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mConsoleSpinner.setAdapter(adapter);
-        mConsoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        mConsoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mConsole = (String) parent.getItemAtPosition(position);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
                 mConsole = null;
             }
         });
@@ -142,6 +139,11 @@ public class RegisterFragment extends Fragment
             }
         });
         return v;
+    }
+
+    public void updateInformation(String name, String email) {
+        mFname.setText(name);
+        mEmail.setText(email);
     }
 
 //INNER CLASSES

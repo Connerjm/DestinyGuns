@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+
 import edu.uw.connerjm.destinyguns.Fragments.LoginFragment;
 import edu.uw.connerjm.destinyguns.Fragments.RegisterFragment;
 import edu.uw.connerjm.destinyguns.R;
@@ -32,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         getSupportFragmentManager().beginTransaction().add(R.id.lr_container, new LoginFragment())
                 .addToBackStack(null).commit();
     }
@@ -47,7 +51,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.My
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
-//INTERFACE METHODS
+    @Override
+    public void myStartRegisterFacebook(String name, String email) {
+        RegisterFragment registerFragment = new RegisterFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.lr_container,
+                new RegisterFragment()).addToBackStack(null).commit();
+        registerFragment.updateInformation(name, email);
+    }
+
+    //INTERFACE METHODS
 
     /**
      * Changes the displayed activity from the login activity to the main activity.
