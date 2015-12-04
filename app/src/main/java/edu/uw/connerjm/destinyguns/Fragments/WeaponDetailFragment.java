@@ -2,6 +2,8 @@ package edu.uw.connerjm.destinyguns.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +78,8 @@ public class WeaponDetailFragment extends Fragment
     private TextView mStatSeven;
     private TextView mDetails;
 
+    private ImageView mPicture;
+
     private String name;
     private String useremail;
 
@@ -130,6 +135,9 @@ public class WeaponDetailFragment extends Fragment
         mStatSeven = (TextView) v.findViewById(R.id.detail_stat_seven_text);
         mDetails = (TextView) v.findViewById(R.id.detail_details_text);
 
+        mPicture = (ImageView) v.findViewById(R.id.detail_picture);
+//        picture.loadUrl("http://cssgate.insttech.washington.edu/~connerjm/DestinyGunsImages/Icons/abyssdefianticon.png");
+
         createButtonBar(v);
         createrankBar(v);
 
@@ -161,6 +169,7 @@ public class WeaponDetailFragment extends Fragment
         if(networkInfo != null && networkInfo.isConnected())
         {
             new DetailWebTask().execute(myurl);
+            new LoadImageWebTask().execute("http://cssgate.insttech.washington.edu/~connerjm/DestinyGunsImages/Icons/abyssdefianticon.png");
         }
         else
         {
@@ -737,6 +746,42 @@ public class WeaponDetailFragment extends Fragment
             catch(Exception e)
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
+            }
+        }
+    }
+
+    private class LoadImageWebTask extends AsyncTask<String, Void, Bitmap>
+    {
+
+        private static final String TAG = "LoadImageWebTask";
+
+        @Override
+        protected Bitmap doInBackground(String... args)
+        {
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+                Log.d(TAG, "have received bitmap " + bitmap.toString());
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, e.getMessage());
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap)
+        {
+            if(bitmap != null)
+            {
+                mPicture.setImageBitmap(bitmap);
+                Log.d(TAG, "have set image to " + bitmap.toString());
+            }
+            else
+            {
+                Log.d(TAG, "Bitmap problem");
             }
         }
     }
