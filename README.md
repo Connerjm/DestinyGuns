@@ -8,6 +8,7 @@ Tacoma with Robert Gillis.
 Social media login (either Facebook or Google). Maybe
 
 Incorporate pictures in the list and/or detailed weapon pages.
+    Got icons for either on the detail page or both that and the list.
 
 More tests.
 
