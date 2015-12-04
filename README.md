@@ -7,8 +7,11 @@ Tacoma with Robert Gillis.
 
 Social media login (either Facebook or Google). Maybe
 
-Incorporate pictures in the list and/or detailed weapon pages.
-    Got icons for either on the detail page or both that and the list.
+Pictures in the list.
+
+Refine button should change what it says based on the spinners selected.
+
+Picture backgrounds for home, info and login pages?
 
 More tests.
 
