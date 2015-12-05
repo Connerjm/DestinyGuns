@@ -82,6 +82,40 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     /**
+     * Tests if you can click the image button and add a weapon to one of the lists.
+     */
+    public void testAddingWeaponToList()
+    {
+        solo.clickOnText("Select a Weapon Type");
+        solo.clickOnText("Sword");
+        solo.clickOnButton(1);
+        solo.clickOnText("Dark-Drinker");
+        solo.clickOnImageButton(0);
+        solo.goBack();
+        solo.goBack();
+        solo.clickOnText("Select a List");
+        solo.clickOnText("Favourites");
+        solo.clickOnButton(0);
+        boolean textFound = solo.searchText("Dark-Drinker");
+        assertTrue("Could add weapon to list.", textFound);
+    }
+
+    /**
+     * Tests if you can then view your list and remove the weapon from it.
+     */
+    public void testRemovingWeaponFromList()
+    {
+        solo.clickOnText("Select a List");
+        solo.clickOnText("Favourites");
+        solo.clickOnButton(0);
+        solo.clickOnText("Dark-Drinker");
+        solo.clickOnImageButton(0);
+        solo.goBack();
+        boolean textFound = solo.searchText("Dark-Drinker");
+        assertFalse("Can remove weapon from list.", textFound);
+    }
+
+    /**
      * Tests if you can refine a list with the spinners and view the resulting list.
      */
     public void testRefiningList()
