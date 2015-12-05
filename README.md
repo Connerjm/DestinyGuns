@@ -5,7 +5,7 @@ Tacoma with Robert Gillis.
 
 # Functionality Yet to be Implemented.
 
-Social media login (either Facebook or Google). Maybe
+Search bar?
 
 Pictures in the list.
 
