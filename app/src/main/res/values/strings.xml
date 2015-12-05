@@ -34,7 +34,27 @@
     <string name="cancel">Cancel</string>
     <string name="rate">Rate</string>
     <string name="voterank">Vote on Rank</string>
-    <string name="your_blank_weapons">"Your %1$s Weapons"</string>
+    <string name="your_blank_weapons">Your %1$s Weapons</string>
+    <string name="blank_weapons">%1$s Weapons</string>
+    <string name="blanks">%1$ss</string>
+    <string name="blank_blank_weapons">%1$s %2$s Weapons</string>
+    <string name="all_weapons">All Weapons</string>
+    <string name="blank_blanks">%1$s %2$ss</string>
+    <string name="full_name">%1$s (%2$d)</string>
+    <string name="exclusive">!%1$s exclusive!</string>
+    <string name="charge_rate">Charge Rate: %1$d</string>
+    <string name="impact">Impact: %1$d</string>
+    <string name="range">Range: %1$d</string>
+    <string name="stability">Stability: %1$d</string>
+    <string name="reload">Reload: %1$d</string>
+    <string name="magazine">Magazine: %1$d</string>
+    <string name="rateoffire">Rate of Fire: %1$d</string>
+    <string name="blast">Blast Radius: %1$d</string>
+    <string name="velocity">Velocity: %1$d</string>
+    <string name="speed">Speed: %1$d</string>
+    <string name="efficiency">Efficiency: %1$d</string>
+    <string name="defense">Defense: %1$d</string>
+    <string name="energy">Energy: %1$d</string>
 
     <!-- PHAT strings. -->
     <string name="info_paragraph1">Destiny Guns was created by Khaos Studios. We are Conner Martin

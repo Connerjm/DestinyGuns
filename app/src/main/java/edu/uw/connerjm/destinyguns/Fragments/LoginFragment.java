@@ -310,7 +310,7 @@ public class LoginFragment extends Fragment
                     SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.putBoolean(getString(R.string.LOGGED_IN), true);
                     editor.putString(getString(R.string.USERNAME), mEmail.getText().toString());
-                    editor.commit();
+                    editor.apply();
                     ((MyRegisterListener) getActivity()).myStartMain();
                 }
                 else

@@ -468,7 +468,7 @@ public class WeaponDetailFragment extends Fragment
                 mDamage.setText((String) jsonObject.get("damagetype"));
                 mFlavour.setText((String) jsonObject.get("flavour"));
                 mRank = Integer.parseInt((String) jsonObject.get("rank"));
-                mName.setText(name + " (" + mRank + ")");
+                mName.setText(getString(R.string.full_name, name, mRank));
                 if(mRarity.equalsIgnoreCase("Legendary"))
                 {
                     mName.setTextColor(ContextCompat.getColor(getActivity(), R.color.legendary));
@@ -485,47 +485,47 @@ public class WeaponDetailFragment extends Fragment
                 }
                 if(!jsonObject.isNull("gatedfor"))
                 {
-                    mExclusive.setText("!" + jsonObject.get("gatedfor") + " exclusive!");
+                    mExclusive.setText(getString(R.string.exclusive, jsonObject.get("gatedfor")));
                 }
 
                 String type = mType.getText().toString();
 
                 if(type.equalsIgnoreCase("fusion rifle"))
                 {
-                    mStatOne.setText("Charge Rate: " + jsonObject.get("chargerate"));
-                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
-                    mStatThree.setText("Range: " + jsonObject.get("range"));
-                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
-                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
-                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
+                    mStatOne.setText(getString(R.string.charge_rate, jsonObject.getInt("chargerate")));
+                    mStatTwo.setText(getString(R.string.impact, jsonObject.getInt("impact")));
+                    mStatThree.setText(getString(R.string.range, jsonObject.getInt("range")));
+                    mStatFour.setText(getString(R.string.stability, jsonObject.getInt("stability")));
+                    mStatFive.setText(getString(R.string.reload, jsonObject.getInt("reload")));
+                    mStatSix.setText(getString(R.string.magazine, jsonObject.getInt("magazine")));
                 }
                 else if(type.equalsIgnoreCase("rocket launcher"))
                 {
-                    mStatOne.setText("Rate of Fire: " + jsonObject.get("rateoffire"));
-                    mStatTwo.setText("Blast Radius: " + jsonObject.get("blastradius"));
-                    mStatThree.setText("Velocity: " + jsonObject.get("velocity"));
-                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
-                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
-                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
+                    mStatOne.setText(getString(R.string.rateoffire, jsonObject.getInt("rateoffire")));
+                    mStatTwo.setText(getString(R.string.blast, jsonObject.getInt("blastradius")));
+                    mStatThree.setText(getString(R.string.velocity, jsonObject.getInt("velocity")));
+                    mStatFour.setText(getString(R.string.stability, jsonObject.getInt("stability")));
+                    mStatFive.setText(getString(R.string.reload, jsonObject.getInt("reload")));
+                    mStatSix.setText(getString(R.string.magazine, jsonObject.getInt("magazine")));
                 }
                 else if(type.equalsIgnoreCase("sword"))
                 {
-                    mStatOne.setText("Speed: " + jsonObject.get("speed"));
-                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
-                    mStatThree.setText("Range: " + jsonObject.get("range"));
-                    mStatFour.setText("Efficiency: " + jsonObject.get("efficiency"));
-                    mStatFive.setText("Defense: " + jsonObject.get("defence"));
-                    mStatSix.setText("Energy: " + jsonObject.get("energy"));
-                    mStatSeven.setText("Magazine: " + jsonObject.get("magazine"));
+                    mStatOne.setText(getString(R.string.speed, jsonObject.getInt("speed")));
+                    mStatTwo.setText(getString(R.string.impact, jsonObject.getInt("impact")));
+                    mStatThree.setText(getString(R.string.range, jsonObject.getInt("range")));
+                    mStatFour.setText(getString(R.string.efficiency, jsonObject.getInt("efficiency")));
+                    mStatFive.setText(getString(R.string.defense, jsonObject.getInt("defence")));
+                    mStatSix.setText(getString(R.string.energy, jsonObject.getInt("energy")));
+                    mStatSeven.setText(getString(R.string.magazine, jsonObject.getInt("magazine")));
                 }
                 else
                 {
-                    mStatOne.setText("Rate of Fire: " + jsonObject.get("rateoffire"));
-                    mStatTwo.setText("Impact: " + jsonObject.get("impact"));
-                    mStatThree.setText("Range: " + jsonObject.get("range"));
-                    mStatFour.setText("Stability: " + jsonObject.get("stability"));
-                    mStatFive.setText("Reload: " + jsonObject.get("reload"));
-                    mStatSix.setText("Magazine: " + jsonObject.get("magazine"));
+                    mStatOne.setText(getString(R.string.rateoffire, jsonObject.getInt("rateoffire")));
+                    mStatTwo.setText(getString(R.string.impact, jsonObject.getInt("impact")));
+                    mStatThree.setText(getString(R.string.range, jsonObject.getInt("range")));
+                    mStatFour.setText(getString(R.string.stability, jsonObject.getInt("stability")));
+                    mStatFive.setText(getString(R.string.reload, jsonObject.getInt("reload")));
+                    mStatSix.setText(getString(R.string.magazine, jsonObject.getInt("magazine")));
                 }
             }
             catch(Exception e)
@@ -747,7 +747,7 @@ public class WeaponDetailFragment extends Fragment
                 JSONObject jsonObject = new JSONObject(s);
                 mRank = jsonObject.getInt("newrank");
                 Log.d(TAG, "result = " + mRank);
-                mName.setText(name + " (" + mRank + ")");
+                mName.setText(getString(R.string.full_name, name, mRank));
             }
             catch(Exception e)
             {

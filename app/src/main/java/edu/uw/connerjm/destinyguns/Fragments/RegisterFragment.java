@@ -49,13 +49,11 @@ public class RegisterFragment extends Fragment
     private String mFBEmail;
 
     /** the layout parts that we need access to. */
-    private Button mRegister;
     private EditText mEmail;
     private EditText mPassword;
     private EditText mFname;
     private EditText mMinit;
     private EditText mLname;
-    private Spinner mConsoleSpinner;
     private String mConsole = null;
 
 //CONSTRUCTOR
@@ -85,7 +83,7 @@ public class RegisterFragment extends Fragment
         mMinit = (EditText) v.findViewById(R.id.minit_register);
         mLname = (EditText) v.findViewById(R.id.lname_register);
 
-        mConsoleSpinner = (Spinner) v.findViewById(R.id.console_register);
+        Spinner mConsoleSpinner = (Spinner) v.findViewById(R.id.console_register);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.console_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,7 +100,7 @@ public class RegisterFragment extends Fragment
             }
         });
 
-        mRegister = (Button) v.findViewById(R.id.confirm_register);
+        Button mRegister = (Button) v.findViewById(R.id.confirm_register);
         mRegister.setOnClickListener(new View.OnClickListener() {
             /**
              * When the register button is clicked, if the fields are filled out accordingly, we

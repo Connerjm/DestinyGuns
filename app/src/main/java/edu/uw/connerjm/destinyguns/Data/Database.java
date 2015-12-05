@@ -8,7 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Created by Conner on 02/12/2015.
+ * SQLite database for remembering what weapons the user has added to which list.
+ *
+ * @author Conner Martin
+ * @author Robert Gillis
+ * @version 0.0.01
+ * @since 29/11/2015
  */
 public class Database
 {
@@ -17,12 +22,11 @@ public class Database
     public static final String DB_NAME = "Destiny.db";
     private static final String TAG = "Database";
 
-    private DBHelper mDBHelper;
     private SQLiteDatabase mSQLiteDatabase;
 
     public Database(Context context)
     {
-        mDBHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
+        DBHelper mDBHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
         mSQLiteDatabase = mDBHelper.getWritableDatabase();
     }
 

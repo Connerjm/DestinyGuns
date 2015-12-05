@@ -138,13 +138,13 @@ public class WeaponListFragment extends Fragment
         {
             myurl = refineRarityURL;
             myurl += "?rarity=" + rarity;
-            textView.setText(rarity + " " + "Weapons");
+            textView.setText(getString(R.string.blank_weapons, rarity));
         }
         else if((rarity == null) && !(slot == null) && (type == null))//just slot
         {
             myurl = refineSlotURL;
             myurl += "?slot=" + slot.toLowerCase();
-            textView.setText(slot + " " + "Weapons");
+            textView.setText(getString(R.string.blank_weapons, slot));
         }
         else if((rarity == null) && (slot == null) && !(type == null)
                 || ((rarity == null) && !(slot == null)))//just type or slot and type
@@ -158,18 +158,18 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d("WeaponListURLEncoding", "Error encoding " + e.getMessage());
             }
-            textView.setText(type + "s");
+            textView.setText(getString(R.string.blanks, type));
         }
         else if(!(rarity == null) && !(slot == null) && (type == null))//rarity and slot
         {
             myurl = refineRarityAndSlotURL;
             myurl += "?rarity=" + rarity + "&slot=" + slot.toLowerCase();
-            textView.setText(rarity + " " + slot + " " + "Weapons");
+            textView.setText(getString(R.string.blank_blank_weapons, rarity, slot));
         }
         else if((rarity == null))//none
         {
             myurl = refineAllURL;
-            textView.setText("All weapons");
+            textView.setText(getString(R.string.all_weapons));
         }
         else//rarity and type or all three.
         {
@@ -183,7 +183,7 @@ public class WeaponListFragment extends Fragment
             {
                 Log.d("WeaponListURLEncoding", "Error in encoding is " + e.getMessage());
             }
-            textView.setText(rarity + " " + type + "s");
+            textView.setText(getString(R.string.blank_blanks, rarity, type));
         }
         mListView.addHeaderView(textView);
 
