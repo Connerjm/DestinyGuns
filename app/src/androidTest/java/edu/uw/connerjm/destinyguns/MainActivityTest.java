@@ -72,12 +72,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     /**
      * Tests if you can select one of the three lists and view the weapons in it.
      */
-    public void testSelectingList()
+    public void testSelectingListWhenEmpty()
     {
         solo.clickOnText("Select a List");
         solo.clickOnText("Wishlist");
         solo.clickOnButton(0);
-        boolean textFound = solo.searchText("MIDA Multi-Tool");
+        boolean textFound = solo.searchText("Your List is Empty");
         assertTrue("Could select a list and press the go to list button.", textFound);
     }
 
