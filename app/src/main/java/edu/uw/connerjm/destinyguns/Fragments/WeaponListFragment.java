@@ -2,6 +2,8 @@ package edu.uw.connerjm.destinyguns.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -27,7 +29,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.uw.connerjm.destinyguns.HelperClasses.WeaponInfo;
 import edu.uw.connerjm.destinyguns.R;
@@ -69,9 +70,12 @@ public class WeaponListFragment extends Fragment
             "http://cssgate.insttech.washington.edu/~connerjm/viewList.php";
 
     /** Holds a list of the weapon info we need for holding these weapons. */
-    private List<WeaponInfo> mList = new ArrayList<>();
+    private ArrayList<WeaponInfo> mList = new ArrayList<>();
     private ListView mListView;
     private ArrayAdapter mAdapter;
+
+    private Bitmap mIcon;
+    private Bitmap mDamageIcon;
 
 //CONSTRUCTOR
 
@@ -109,6 +113,8 @@ public class WeaponListFragment extends Fragment
 
         mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, mList);
+
+//        mAdapter = new MyAdapter(getActivity(), mList);
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -292,8 +298,15 @@ public class WeaponListFragment extends Fragment
                     {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(x);
                         String name = (String) jsonObject.get("name");
-                        String damageType = (String) jsonObject.get("damagetype");
-                        mList.add(new WeaponInfo(name, damageType));
+//                        String cleanname = name.replace(" ", "").replace("\'", "").replace("(", "")
+//                                .replace(")", "").replace("-", "").toLowerCase();
+//                        String damageType = (String) jsonObject.get("damagetype");
+//                        damageType = damageType.toLowerCase();
+//                        new LoadImageWebTask().execute(
+//                                "http://cssgate.insttech.washington.edu/~connerjm/DestinyGuns" +
+//                                        "Images/Icons/" + cleanname + "icon.png");
+//                        new LoadDamageImageWebTask().execute("http://cssgate.insttech.washington.edu/~connerjm/DestinyGunsImages/damageicons/" + damageType + ".svg");
+                        mList.add(new WeaponInfo(mIcon, name, mDamageIcon));
                     }
                     mListView.setAdapter(mAdapter);
                 }
@@ -301,6 +314,78 @@ public class WeaponListFragment extends Fragment
             catch(Exception e)
             {
                 Log.d(TAG, "Parsing JSON Exception " + e.getMessage());
+            }
+        }
+    }
+
+    private class LoadImageWebTask extends AsyncTask<String, Void, Bitmap>
+    {
+
+        private static final String TAG = "LoadImageWebTask";
+
+        @Override
+        protected Bitmap doInBackground(String... args)
+        {
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+                Log.d(TAG, "have received bitmap " + bitmap.toString());
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, e.getMessage());
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap)
+        {
+            if(bitmap != null)
+            {
+                mIcon = bitmap;
+                Log.d(TAG, "have set image to " + bitmap.toString());
+            }
+            else
+            {
+                Log.d(TAG, "Bitmap problem");
+            }
+        }
+    }
+
+    private class LoadDamageImageWebTask extends AsyncTask<String, Void, Bitmap>
+    {
+
+        private static final String TAG = "LoadImageWebTask";
+
+        @Override
+        protected Bitmap doInBackground(String... args)
+        {
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
+                Log.d(TAG, "have received bitmap " + bitmap.toString());
+            }
+            catch(Exception e)
+            {
+                Log.d(TAG, e.getMessage());
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap)
+        {
+            if(bitmap != null)
+            {
+                mDamageIcon = bitmap;
+                Log.d(TAG, "have set image to " + bitmap.toString());
+            }
+            else
+            {
+                Log.d(TAG, "Bitmap problem");
             }
         }
     }

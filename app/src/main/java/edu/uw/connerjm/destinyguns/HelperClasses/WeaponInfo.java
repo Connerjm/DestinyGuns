@@ -1,5 +1,7 @@
 package edu.uw.connerjm.destinyguns.HelperClasses;
 
+import android.graphics.Bitmap;
+
 /**
  * Holds the information for any given weapon.
  *
@@ -13,21 +15,24 @@ public class WeaponInfo
 
 //VARIABLES
 
+    public Bitmap mIcon;
     public String mName;
-    public String mDamageType;
+    public Bitmap mDamageIcon;
 
 //CONSTRUCTOR
 
     /**
      * Creates a weapon info object for use in the refines list of weapons.
      *
+     * @param icon is the bitmap of the icon for this weapon.
      * @param name is the name of the weapon.
-     * @param damageType is the type of damage that is dealt.
+     * @param damageIcon is the type of damage that is dealt.
      */
-    public WeaponInfo(String name, String damageType)
+    public WeaponInfo(Bitmap icon, String name, Bitmap damageIcon)
     {
+        mIcon = icon;
         mName = name;
-        mDamageType = damageType;
+        mDamageIcon = damageIcon;
     }
 
 //OVERWRITTEN METHODS
